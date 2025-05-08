@@ -1,4 +1,4 @@
-# FIAPCloudGames
+# FIAP Cloud Games
 
 ## Grupo - 48
 
@@ -9,8 +9,8 @@
 
 ## Requisitos Funcionais
 
-- Cadastro de usuários: Identificação do cliente por nome, e-mail e senha, e Validar formato de e-mail e senha segura (mínimo de 8 caracteres com números, letras e caracteres especiais).
-- Autenticação e Autorização: Autenticação via token JWT. Ter dois níveis de acesso: Usuário e Administrador
+- **Cadastro de usuários**: Identificação do cliente por nome, e-mail e senha, e Validar formato de e-mail e senha segura (mínimo de 8 caracteres com números, letras e caracteres especiais).
+- **Autenticação e Autorização**: Autenticação via token JWT. Ter dois níveis de acesso: Usuário e Administrador
 
 ## Requisitos Técnicos
 
@@ -26,6 +26,9 @@
 ## DDD - Event Storming
 
 ## Setup do Banco de Dados e Migrações
+
+- No Package Manager Console escolha o "Default Project" como "Infrastructure"
+- Depois digite: Update-Database -StartupProject Infrastructure
 
 ## Atualize o Banco de Dados
 
