@@ -8,5 +8,10 @@ namespace Infrastructure.Repository
         public UsuarioRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public Usuario ObterPorEmail(string email)
+        {
+            return _dbSet.FirstOrDefault(entity => entity.Email == email);
+        }
     }
 }
