@@ -33,6 +33,7 @@ namespace FIAPCloudGamesApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] UsuarioInput input)
         {
+
             try
             {
                 var usuario = new Usuario()
@@ -42,14 +43,14 @@ namespace FIAPCloudGamesApi.Controllers
                     Senha = input.Senha,
                     NivelAcesso = "Usuario"
                 };
-                if(_usuarioRepository.ObterPorEmail(input.Email) == null)
+                if (_usuarioRepository.ObterPorEmail(input.Email) == null)
                 {
                     _usuarioRepository.Cadastrar(usuario);
                     return Ok(usuario);
                 }
                 else
                 {
-                    return BadRequest("Email já cadastrado");
+                    return BadRequest("E-mail já cadastrado");
                 }
             }
             catch (Exception e)
