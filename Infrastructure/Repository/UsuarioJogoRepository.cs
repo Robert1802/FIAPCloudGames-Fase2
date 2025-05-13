@@ -8,5 +8,14 @@ namespace Infrastructure.Repository
         public UsuarioJogoRepository(ApplicationDbContext context) : base(context)
         {
         }
+        public UsuarioJogo ObterPorIdUsuario(int idUsuario, int idJogo)
+        {
+            return _dbSet.FirstOrDefault(entity => entity.IdUsuario == idUsuario && entity.IdJogo == idJogo);
+        }
+
+        public List<UsuarioJogo> JogosCompradosPorUsuario(int idUsuario)
+        {
+            return _dbSet.Where(entity => entity.IdUsuario == idUsuario).ToList();
+        }
     }
 }
