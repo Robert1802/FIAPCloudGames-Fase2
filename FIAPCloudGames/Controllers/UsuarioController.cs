@@ -95,5 +95,7 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
+        // Trazer jogos deste usuário
+
     }
 }
