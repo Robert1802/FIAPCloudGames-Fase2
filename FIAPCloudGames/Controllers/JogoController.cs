@@ -60,6 +60,64 @@ namespace FIAPCloudGamesApi.Controllers
         }
 
         // Fazer check para ver se Usuario é Administrador
+        [HttpPost]
+        public IActionResult Post([FromBody] JogoInput input)
+        {
+            try
+            {
+                var jogo = new Jogo()
+                {
+                    Nome = input.Nome,
+                    Empresa = input.Empresa,
+                    Descricao = input.Descricao,
+                    Preco = input.Preco,
+                    Desconto = 0
+                };
+                _jogoRepository.Cadastrar(jogo);
+                return Ok(jogo);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        // Fazer check para ver se Usuario é Administrador
+        [HttpPut]
+        public IActionResult Put([FromBody] JogoUpdateInput input)
+        {
+            try
+            {
+                var jogo = _jogoRepository.ObterPorId(input.Id);
+                jogo.Nome = input.Nome;
+                jogo.Empresa = input.Empresa;
+                jogo.Descricao = input.Descricao;
+                jogo.Preco = input.Preco;
+                _jogoRepository.Alterar(jogo);
+                return Ok();
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        // Fazer check para ver se Usuario é Administrador
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            try
+            {
+                _jogoRepository.Deletar(id);
+                return Ok();
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
 
 
     }
