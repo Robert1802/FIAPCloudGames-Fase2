@@ -13,6 +13,7 @@ namespace Infrastructure.Repository.Configurations
             builder.Property(p => p.Id).HasColumnType("INT").UseIdentityColumn();
             builder.Property(p => p.IdUsuario).HasColumnType("INT").IsRequired();
             builder.Property(p => p.IdJogo).HasColumnType("INT").IsRequired();
+            builder.Property(p => p.PrecoDaCompra).HasColumnType("DECIMAL(10,0)").IsRequired();
             builder.Property(p => p.DataCriacao).HasColumnName("DataCriacao").HasColumnType("DATETIME").IsRequired();
         }
     }

@@ -11,10 +11,13 @@ namespace FIAPCloudGamesApi.Controllers
     public class UsuarioJogoController : Controller
     {
         private readonly IUsuarioJogoRepository _usuarioJogoRepository;
+        private readonly IJogoRepository _jogoRepository;
 
-        public UsuarioJogoController(IUsuarioJogoRepository usuarioJogoRepository)
+        public UsuarioJogoController(IUsuarioJogoRepository usuarioJogoRepository,
+                                     IJogoRepository jogoRepository)
         {
             _usuarioJogoRepository = usuarioJogoRepository;
+            _jogoRepository = jogoRepository;
         }
 
         // Atribuir Jogo a um usuario
@@ -23,14 +26,23 @@ namespace FIAPCloudGamesApi.Controllers
         {
             try
             {
-
+                // Verificar se o jogo ja foi comprado por este usuario
                 var usuarioJogoComprado = _usuarioJogoRepository.ObterPorIdUsuario(input.IdUsuario, input.IdJogo);
                 if (usuarioJogoComprado == null)
                 {
+                    // Verifica preço atual
+                    var jogoAtual = _jogoRepository.ObterPorId(input.IdJogo);
+                    var precoAtual = jogoAtual.Preco - (jogoAtual.Preco * jogoAtual.Desconto);
+
+                    // Traz saldo do usuario
+                    // Subtrai do saldo do usuario
+                    // Usuario.Carteira - precoAtual
+
                     var usuarioJogoNovo = new UsuarioJogo()
                     {
                         IdUsuario = input.IdUsuario,
-                        IdJogo = input.IdJogo
+                        IdJogo = input.IdJogo,
+                        PrecoDaCompra = precoAtual
                     };
                     _usuarioJogoRepository.Cadastrar(usuarioJogoNovo);
                     return Ok(usuarioJogoNovo);
