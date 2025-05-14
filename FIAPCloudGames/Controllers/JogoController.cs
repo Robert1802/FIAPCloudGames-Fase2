@@ -119,6 +119,33 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
+        // Fazer check para ver se Usuario é Administrador
+        [HttpPut("desconto")]
+        public IActionResult AtualizarDesconto([FromBody] JogoDescontoInput input)
+        {
+            try
+            {
+                var jogo = _jogoRepository.ObterPorId(input.Id);
+                if (jogo != null)
+                {
+                    if (input.Desconto > 100 || input.Desconto < 0)
+                        return BadRequest("Valor de desconto indevido");
+
+                    jogo.Desconto = input.Desconto/100;
+                    _jogoRepository.Alterar(jogo);
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest($"Id {input.Id} de Jogo inexistente.");
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
 
     }
 }
