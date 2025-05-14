@@ -33,7 +33,7 @@ namespace FIAPCloudGamesApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] UsuarioInput input)
         {
-
+            // TODO: Validacao de forca de Senha
             try
             {
                 var usuario = new Usuario()

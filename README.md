@@ -30,6 +30,6 @@
 - No Package Manager Console escolha o "Default Project" como "Infrastructure"
 - Depois digite: Update-Database -StartupProject Infrastructure
 
-## Atualize o Banco de Dados
-
 ## String de Conexão
+
+- Alterar a string de conexão para o seu servidor local
