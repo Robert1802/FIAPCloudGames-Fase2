@@ -1,12 +1,21 @@
 ﻿using Core.Entity;
+using Core.Input;
 using Core.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Repository
 {
-    public class JogoRepository : EFREpository<Jogo>, IJogoRepository
+    public sealed class JogoRepository : EFREpository<Jogo>, IJogoRepository
     {
         public JogoRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public Jogo VerificarSeJogoExiste(int id) => 
+            _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+        public Jogo VerificarSeJogoExiste(string nome) =>
+            _dbSet.FirstOrDefault(entity => entity.Nome == nome);
     }
 }
