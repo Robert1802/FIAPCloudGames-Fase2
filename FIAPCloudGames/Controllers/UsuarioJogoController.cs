@@ -3,6 +3,7 @@ using Core.Entity;
 using Core.Input;
 using Core.Repository;
 using Infrastructure.Repository;
+using Azure.Identity;
 
 namespace FIAPCloudGamesApi.Controllers
 {
@@ -34,6 +35,7 @@ namespace FIAPCloudGamesApi.Controllers
                     var jogoAtual = _jogoRepository.ObterPorId(input.IdJogo);
                     var precoAtual = jogoAtual.Preco - (jogoAtual.Preco * jogoAtual.Desconto);
 
+                    // TODO: Carteira
                     // Traz saldo do usuario
                     // Subtrai do saldo do usuario
                     // Usuario.Carteira - precoAtual

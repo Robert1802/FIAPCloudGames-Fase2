@@ -21,6 +21,7 @@ namespace FIAPCloudGamesApi.Controllers
         {
             try
             {
+                // TODO: Adicionar Filtro de nome
                 var jogosDto = new List<JogoDto>();
                 var jogos = _jogoRepository.ObterTodos();
 
@@ -73,6 +74,8 @@ namespace FIAPCloudGamesApi.Controllers
                     Preco = input.Preco,
                     Desconto = 0
                 };
+
+                // TODO: Verificar se Jogo ja existe baseado no nome
                 _jogoRepository.Cadastrar(jogo);
                 return Ok(jogo);
             }
