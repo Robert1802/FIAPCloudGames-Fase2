@@ -12,12 +12,15 @@ namespace FIAPCloudGamesApi.Controllers
     public class UsuarioJogoController : Controller
     {
         private readonly IUsuarioJogoRepository _usuarioJogoRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
         private readonly IJogoRepository _jogoRepository;
 
         public UsuarioJogoController(IUsuarioJogoRepository usuarioJogoRepository,
+                                     IUsuarioRepository usuarioRepository,
                                      IJogoRepository jogoRepository)
         {
             _usuarioJogoRepository = usuarioJogoRepository;
+            _usuarioRepository = usuarioRepository;
             _jogoRepository = jogoRepository;
         }
 
@@ -28,17 +31,22 @@ namespace FIAPCloudGamesApi.Controllers
             try
             {
                 // Verificar se o jogo ja foi comprado por este usuario
-                var usuarioJogoComprado = _usuarioJogoRepository.ObterPorIdUsuario(input.IdUsuario, input.IdJogo);
+                var usuarioJogoComprado = _usuarioJogoRepository.ObterPorIdUsuarioIdJogo(input.IdUsuario, input.IdJogo);
                 if (usuarioJogoComprado == null)
                 {
                     // Verifica preço atual
                     var jogoAtual = _jogoRepository.ObterPorId(input.IdJogo);
                     var precoAtual = jogoAtual.Preco - (jogoAtual.Preco * jogoAtual.Desconto);
 
-                    // TODO: Carteira
                     // Traz saldo do usuario
+                    var saldoAtual = _usuarioRepository.ConferirSaldo(input.IdUsuario);
+
+                    // Verificar se saldo vai ficar negativo
+                    if(saldoAtual < precoAtual)
+                        return BadRequest("Saldo insuficiente para comprar o jogo.");
+
                     // Subtrai do saldo do usuario
-                    // Usuario.Carteira - precoAtual
+                    _usuarioRepository.Subtrair(input.IdUsuario, precoAtual);
 
                     var usuarioJogoNovo = new UsuarioJogo()
                     {

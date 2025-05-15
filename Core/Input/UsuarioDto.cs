@@ -9,6 +9,7 @@ namespace Core.Input
         public string? Email { get; set; }
         public string? Senha { get; set; }
         public string? NivelAcesso { get; set; }
+        public decimal? Saldo { get; set; }
         public DateTime DataCriacao { get; set; }
     }
 }

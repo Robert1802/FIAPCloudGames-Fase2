@@ -13,5 +13,29 @@ namespace Infrastructure.Repository
         {
             return _dbSet.FirstOrDefault(entity => entity.Email == email);
         }
+
+        public decimal ConferirSaldo(int id)
+        {
+            Usuario usuario = _dbSet.FirstOrDefault(entity => entity.Id == id);
+            return (decimal)usuario.Saldo;
+        }
+
+        public decimal Depositar(int id, decimal valor)
+        {
+            Usuario usuario = ObterPorId(id);
+            usuario.Saldo = usuario.Saldo + valor;
+            _dbSet.Update(usuario);
+            _context.SaveChanges();
+            return (decimal)usuario.Saldo;   
+        }
+
+        public decimal Subtrair(int id, decimal valor)
+        {
+            Usuario usuario = ObterPorId(id);
+            usuario.Saldo = usuario.Saldo - valor;
+            _dbSet.Update(usuario);
+            _context.SaveChanges();
+            return (decimal)usuario.Saldo;
+        }
     }
 }

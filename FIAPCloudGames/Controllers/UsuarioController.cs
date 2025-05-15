@@ -95,7 +95,30 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
-        // TODO: Adicionar sistema de Carteira
+        [HttpPost("depositar")]
+        public IActionResult Depositar([FromBody] UsuarioDeposito input)
+        {
+            try
+            {
+
+                // verificar se usuario existe
+                if (_usuarioRepository.ObterPorId(input.Id) == null)
+                    return BadRequest("Usuario Inexistente.");
+
+                // Verificar se valor é válido
+                if(input.Deposito < 0)
+                    return BadRequest($"Valor de R$ {input.Deposito} invalido");
+
+                // Depositar valor no saldo
+                var saldo = _usuarioRepository.Depositar(input.Id, input.Deposito);
+                return Ok($"Foi depositado {input.Deposito}. O novo saldo é de {saldo}");
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
 
     }
 }
