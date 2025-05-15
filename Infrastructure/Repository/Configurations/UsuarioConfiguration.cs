@@ -15,6 +15,7 @@ namespace Infrastructure.Repository.Configurations
             builder.Property(p => p.Email).HasColumnType("VARCHAR(100)").IsRequired();
             builder.Property(p => p.Senha).HasColumnType("VARCHAR(100)").IsRequired();
             builder.Property(p => p.NivelAcesso).HasColumnType("VARCHAR(100)").IsRequired();
+            builder.Property(p => p.Saldo).HasColumnType("DECIMAL(10,2)").IsRequired();
             builder.Property(p => p.DataCriacao).HasColumnName("DataCriacao").HasColumnType("DATETIME").IsRequired();
         }
     }

@@ -77,7 +77,6 @@ namespace FIAPCloudGamesApi.Controllers
 
                 VerificaSeJogoExiste(jogo.Nome);
 
-                // TODO: Verificar se Jogo ja existe baseado no nome
                 _jogoRepository.Cadastrar(jogo);
                 return Ok(jogo);
             }
