@@ -68,21 +68,35 @@ namespace FIAPCloudGamesApi.Controllers
             {
                 var jogo = new Jogo()
                 {
-                    Nome = input.Nome,
+                    Nome = input.Nome?.Trim() ?? string.Empty,
                     Empresa = input.Empresa,
-                    Descricao = input.Descricao,
+                    Descricao = input.Descricao?.Trim() ?? string.Empty,
                     Preco = input.Preco,
                     Desconto = 0
                 };
+
+                VerificaSeJogoExiste(jogo.Nome);
 
                 // TODO: Verificar se Jogo ja existe baseado no nome
                 _jogoRepository.Cadastrar(jogo);
                 return Ok(jogo);
             }
+            catch (Exception e) when ((e.Message ?? string.Empty).Contains("O nome do jogo informado já existe em nossos servidores"))
+            {
+                return BadRequest(e.Message);
+            }
             catch (Exception e)
             {
                 return BadRequest(e);
             }
+        }
+
+        private void VerificaSeJogoExiste(string nome)
+        {
+            var jogo = _jogoRepository.VerificarSeJogoExiste(nome);
+
+            if (jogo is not null)
+                throw new Exception("O nome do jogo informado já existe em nossos servidores");
         }
 
         // Fazer check para ver se Usuario é Administrador
@@ -149,6 +163,8 @@ namespace FIAPCloudGamesApi.Controllers
                 return BadRequest(e);
             }
         }
+
+
 
     }
 }
