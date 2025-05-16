@@ -33,7 +33,6 @@ namespace FIAPCloudGamesApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] UsuarioInput input)
         {
-            // TODO: Validacao de forca de Senha
             try
             {
                 var usuario = new Usuario()
@@ -41,7 +40,8 @@ namespace FIAPCloudGamesApi.Controllers
                     Nome = input.Nome,
                     Email = input.Email,
                     Senha = input.Senha,
-                    NivelAcesso = "Usuario"
+                    NivelAcesso = "Usuario",
+                    Saldo = 0
                 };
                 if (_usuarioRepository.ObterPorEmail(input.Email) == null)
                 {
@@ -100,7 +100,6 @@ namespace FIAPCloudGamesApi.Controllers
         {
             try
             {
-
                 // verificar se usuario existe
                 if (_usuarioRepository.ObterPorId(input.Id) == null)
                     return BadRequest("Usuario Inexistente.");
@@ -112,7 +111,6 @@ namespace FIAPCloudGamesApi.Controllers
                 // Depositar valor no saldo
                 var saldo = _usuarioRepository.Depositar(input.Id, input.Deposito);
                 return Ok($"Foi depositado {input.Deposito}. O novo saldo é de {saldo}");
-
             }
             catch (Exception e)
             {
