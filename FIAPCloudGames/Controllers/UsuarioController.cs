@@ -58,7 +58,7 @@ namespace FIAPCloudGamesApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -68,7 +68,7 @@ namespace FIAPCloudGamesApi.Controllers
         {
             try
             {
-                var validacao = ValidarAlteracaoUsuario(input, out var usuario);
+                var validacao = ValidarAlteracaoUsuario(input.Id, out var usuario);
                 if (validacao != null)
                     return validacao;
 
@@ -85,30 +85,27 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
-        private IActionResult? ValidarAlteracaoUsuario(UsuarioUpdateInput input, out Usuario usuario)
+        [HttpPut("adiministrador")]
+        [Authorize]
+        [Authorize(Roles = "Admin")]
+        public IActionResult TransformarEmAdmin([FromBody] UsuarioAdminInput input)
         {
-            var usuarioLogado = UsuarioLogadoHelper.ObterUsuarioLogado(User);
-
-            if (usuarioLogado == null)
+            try
             {
-                usuario = null!;
-                return Unauthorized(ApiResponse<string>.Falha(401, "Usuário não autenticado."));
-            }
+                var validacao = ValidarAlteracaoUsuario(input.IdUsuario, out var usuario);
+                if (validacao != null)
+                    return validacao;
 
-            usuario = _usuarioRepository.ObterPorId(input.Id);
-            if (usuario == null)
+                usuario.NivelAcesso = "Admin";
+
+                _usuarioRepository.Alterar(usuario);
+
+                return Ok(ApiResponse<Usuario>.Ok(usuario));
+            }
+            catch (Exception e)
             {
-                return BadRequest(ApiResponse<string>.Falha(400, "Usuário não cadastrado."));
+                return BadRequest(ApiResponse<string>.Falha(500, $"Erro inesperado: {e.Message}"));
             }
-
-            var ehAdmin = usuarioLogado.NivelAcesso == "Admin";
-
-            if (NaoEhAdminEQuerEditarOutroUsuario(input, usuarioLogado, ehAdmin))
-            {
-                return StatusCode(403, ApiResponse<string>.Falha(403, "Você não tem permissão para alterar este usuário."));
-            }
-
-            return null;
         }
 
         [HttpDelete("{id:int}")]
@@ -126,7 +123,7 @@ namespace FIAPCloudGamesApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -146,13 +143,39 @@ namespace FIAPCloudGamesApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
-        private static bool NaoEhAdminEQuerEditarOutroUsuario(UsuarioUpdateInput input, Usuario usuarioLogado, bool ehAdmin)
+        private static bool NaoEhAdminEQuerEditarOutroUsuario(int idUsuario, Usuario usuarioLogado, bool ehAdmin)
         {
-            return !ehAdmin && usuarioLogado.Id != input.Id;
+            return !ehAdmin && usuarioLogado.Id != idUsuario;
+        }
+
+        private IActionResult? ValidarAlteracaoUsuario(int idUsuario, out Usuario usuario)
+        {
+            var usuarioLogado = UsuarioLogadoHelper.ObterUsuarioLogado(User);
+
+            if (usuarioLogado == null)
+            {
+                usuario = null!;
+                return Unauthorized(ApiResponse<string>.Falha(401, "Usuário não autenticado."));
+            }
+
+            usuario = _usuarioRepository.ObterPorId(idUsuario);
+            if (usuario == null)
+            {
+                return BadRequest(ApiResponse<string>.Falha(400, "Usuário não cadastrado."));
+            }
+
+            var ehAdmin = usuarioLogado.NivelAcesso == "Admin";
+
+            if (NaoEhAdminEQuerEditarOutroUsuario(idUsuario, usuarioLogado, ehAdmin))
+            {
+                return StatusCode(403, ApiResponse<string>.Falha(403, "Você não tem permissão para alterar este usuário."));
+            }
+
+            return null;
         }
     }
 }

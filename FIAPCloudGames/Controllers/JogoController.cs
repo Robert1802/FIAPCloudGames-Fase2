@@ -92,7 +92,7 @@ namespace FIAPCloudGamesApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -126,8 +126,8 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
-        // Fazer check para ver se Usuario é Administrador
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete([FromRoute] int id)
         {
             try
@@ -138,11 +138,10 @@ namespace FIAPCloudGamesApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
-        // Fazer check para ver se Usuario é Administrador
         [HttpPut("desconto")]
         [Authorize(Roles = "Admin")]
         public IActionResult AtualizarDesconto([FromBody] JogoDescontoInput input)
@@ -167,7 +166,7 @@ namespace FIAPCloudGamesApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
