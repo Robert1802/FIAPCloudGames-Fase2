@@ -2,7 +2,6 @@
 
 ## Grupo - 48
 
-- João Gustavo Terres - RM363880 - jg.terres@hotmail.com
 - Roberto Lima de Moura - RM364393 - roblm_@hotmail.com
 - Ricardo Zitelli de Oliveira - RM 360730 - ricardo_zitelli@hotmail.com
 - Victor Prado Chaves - RM362764 - vicpradochaves@gmail.com
