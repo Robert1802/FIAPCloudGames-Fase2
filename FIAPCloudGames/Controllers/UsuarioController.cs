@@ -1,10 +1,11 @@
 ﻿using Core.Entity;
 using Core.Input;
 using Core.Repository;
+using Core.Responses;
 using Core.Utils;
+using FIAPCloudGamesApi.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace FIAPCloudGamesApi.Controllers
 {
@@ -60,47 +61,55 @@ namespace FIAPCloudGamesApi.Controllers
                 return BadRequest(e);
             }
         }
-        
+
         [HttpPut]
         [Authorize]
         public IActionResult Put([FromBody] UsuarioUpdateInput input)
         {
             try
             {
-                var usuarioLogado = ObterUsuarioLogado();
-                var usuario = _usuarioRepository.ObterPorId(input.Id);
-
-                if (usuario == null)
-                    return BadRequest("Usuário não cadastrado");
-
-                var ehAdmin = usuarioLogado.NivelAcesso == "Admin";
-
-                // Se não for admin e estiver tentando editar outro usuário
-                if (!ehAdmin && usuarioLogado.Id != input.Id)
-                    return Forbid("Você não tem permissão para alterar este usuário.");
+                var validacao = ValidarAlteracaoUsuario(input, out var usuario);
+                if (validacao != null)
+                    return validacao;
 
                 usuario.Nome = input.Nome;
                 usuario.Senha = PasswordHelper.HashSenha(input.Senha);
 
                 _usuarioRepository.Alterar(usuario);
 
-                return Ok(usuario);
+                return Ok(ApiResponse<Usuario>.Ok(usuario));
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, $"Erro inesperado: {e.Message}"));
             }
         }
 
-        private Usuario ObterUsuarioLogado()
+        private IActionResult? ValidarAlteracaoUsuario(UsuarioUpdateInput input, out Usuario usuario)
         {
-            return new Usuario
-            {
-                Id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0"),
-                NivelAcesso = User.FindFirst(ClaimTypes.Role)?.Value ?? "Usuario"
-            };
-        }
+            var usuarioLogado = UsuarioLogadoHelper.ObterUsuarioLogado(User);
 
+            if (usuarioLogado == null)
+            {
+                usuario = null!;
+                return Unauthorized(ApiResponse<string>.Falha(401, "Usuário não autenticado."));
+            }
+
+            usuario = _usuarioRepository.ObterPorId(input.Id);
+            if (usuario == null)
+            {
+                return BadRequest(ApiResponse<string>.Falha(400, "Usuário não cadastrado."));
+            }
+
+            var ehAdmin = usuarioLogado.NivelAcesso == "Admin";
+
+            if (NaoEhAdminEQuerEditarOutroUsuario(input, usuarioLogado, ehAdmin))
+            {
+                return StatusCode(403, ApiResponse<string>.Falha(403, "Você não tem permissão para alterar este usuário."));
+            }
+
+            return null;
+        }
 
 
         [HttpDelete("{id:int}")]
@@ -141,5 +150,9 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
+        private static bool NaoEhAdminEQuerEditarOutroUsuario(UsuarioUpdateInput input, Usuario usuarioLogado, bool ehAdmin)
+        {
+            return !ehAdmin && usuarioLogado.Id != input.Id;
+        }
     }
 }
