@@ -6,6 +6,7 @@ using Core.Utils;
 using FIAPCloudGamesApi.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FIAPCloudGamesApi.Controllers
 {
@@ -21,7 +22,7 @@ namespace FIAPCloudGamesApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult Get([FromRoute] int id) // ou Get(int id)
+        public IActionResult Get([FromRoute] int id)
         {
             try
             {
@@ -38,7 +39,7 @@ namespace FIAPCloudGamesApi.Controllers
         {
             try
             {
-                var usuario = new Usuario()
+                var usuario = new Usuario
                 {
                     Nome = input.Nome,
                     Email = input.Email,
@@ -46,15 +47,14 @@ namespace FIAPCloudGamesApi.Controllers
                     NivelAcesso = "Usuario",
                     Saldo = 0
                 };
+
                 if (_usuarioRepository.ObterPorEmail(input.Email) == null)
                 {
                     _usuarioRepository.Cadastrar(usuario);
                     return Ok(usuario);
                 }
-                else
-                {
-                    return BadRequest("E-mail já cadastrado");
-                }
+
+                return BadRequest("E-mail já cadastrado");
             }
             catch (Exception e)
             {
@@ -111,15 +111,18 @@ namespace FIAPCloudGamesApi.Controllers
             return null;
         }
 
-
         [HttpDelete("{id:int}")]
+        [Authorize]
         public IActionResult Delete([FromRoute] int id)
         {
             try
             {
+                var usuario = _usuarioRepository.ObterPorId(id);
+                if (usuario == null)
+                    return BadRequest("Usuário não encontrado.");
+
                 _usuarioRepository.Deletar(id);
                 return Ok();
-
             }
             catch (Exception e)
             {
@@ -132,17 +135,14 @@ namespace FIAPCloudGamesApi.Controllers
         {
             try
             {
-                // verificar se usuario existe
                 if (_usuarioRepository.ObterPorId(input.Id) == null)
-                    return BadRequest("Usuario Inexistente.");
+                    return BadRequest("Usuário inexistente.");
 
-                // Verificar se valor é válido
-                if(input.Deposito < 0)
-                    return BadRequest($"Valor de R$ {input.Deposito} invalido");
+                if (input.Deposito < 0)
+                    return BadRequest($"Valor de R$ {input.Deposito} inválido.");
 
-                // Depositar valor no saldo
                 var saldo = _usuarioRepository.Depositar(input.Id, input.Deposito);
-                return Ok($"Foi depositado {input.Deposito}. O novo saldo é de {saldo}");
+                return Ok($"Foi depositado R$ {input.Deposito}. O novo saldo é de R$ {saldo}");
             }
             catch (Exception e)
             {

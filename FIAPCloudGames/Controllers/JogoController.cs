@@ -1,6 +1,7 @@
 ﻿using Core.Entity;
 using Core.Input;
 using Core.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAPCloudGamesApi.Controllers
@@ -16,14 +17,19 @@ namespace FIAPCloudGamesApi.Controllers
             _jogoRepository = jogoRepository;
         }
 
+
+
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] string? filtroNome)
         {
             try
             {
-                // TODO: Adicionar Filtro de nome
                 var jogosDto = new List<JogoDto>();
-                var jogos = _jogoRepository.ObterTodos();
+                List<Jogo> jogos = [];
+                if (filtroNome == null)
+                    jogos.AddRange(_jogoRepository.ObterTodos());
+                else
+                    jogos.AddRange(_jogoRepository.ObterTodosFiltro(filtroNome));
 
                 foreach (var jogo in jogos)
                 {
@@ -60,8 +66,8 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
-        // Fazer check para ver se Usuario é Administrador
         [HttpPost]
+        [Authorize(Roles="Admin")]
         public IActionResult Post([FromBody] JogoInput input)
         {
             try
@@ -100,11 +106,12 @@ namespace FIAPCloudGamesApi.Controllers
 
         // Fazer check para ver se Usuario é Administrador
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public IActionResult Put([FromBody] JogoUpdateInput input)
         {
             try
             {
-                var jogo = _jogoRepository.ObterPorId(input.Id);
+                Jogo jogo = _jogoRepository.ObterPorId(input.Id);
                 jogo.Nome = input.Nome;
                 jogo.Empresa = input.Empresa;
                 jogo.Descricao = input.Descricao;
@@ -137,6 +144,7 @@ namespace FIAPCloudGamesApi.Controllers
 
         // Fazer check para ver se Usuario é Administrador
         [HttpPut("desconto")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AtualizarDesconto([FromBody] JogoDescontoInput input)
         {
             try

@@ -17,5 +17,8 @@ namespace Infrastructure.Repository
 
         public Jogo VerificarSeJogoExiste(string nome) =>
             _dbSet.FirstOrDefault(entity => entity.Nome == nome);
+
+        public List<Jogo> ObterTodosFiltro(string filtroNome) =>
+            _dbSet.Where(x => x.Nome.Contains(filtroNome) ).ToList();
     }
 }
