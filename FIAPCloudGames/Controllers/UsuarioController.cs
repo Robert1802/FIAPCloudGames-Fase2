@@ -5,6 +5,7 @@ using Core.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using FIAPCloudGamesApi.Services;
 
 namespace FIAPCloudGamesApi.Controllers
 {
@@ -67,17 +68,9 @@ namespace FIAPCloudGamesApi.Controllers
         {
             try
             {
-                var usuarioLogado = ObterUsuarioLogado();
-                var usuario = _usuarioRepository.ObterPorId(input.Id);
-
-                if (usuario == null)
-                    return BadRequest("Usuário não cadastrado");
-
-                var ehAdmin = usuarioLogado.NivelAcesso == "Admin";
-
-                // Se não for admin e estiver tentando editar outro usuário
-                if (!ehAdmin && usuarioLogado.Id != input.Id)
-                    return Forbid("Você não tem permissão para alterar este usuário.");
+                Usuario usuario = _usuarioRepository.ObterPorId(input.Id);
+                UsuarioService usuarioService = new();
+                usuarioService.EhAdmin(usuario);
 
                 usuario.Nome = input.Nome;
                 usuario.Senha = PasswordHelper.HashSenha(input.Senha);
@@ -92,22 +85,16 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
-        private Usuario ObterUsuarioLogado()
-        {
-            return new Usuario
-            {
-                Id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0"),
-                NivelAcesso = User.FindFirst(ClaimTypes.Role)?.Value ?? "Usuario"
-            };
-        }
-
-
-
         [HttpDelete("{id:int}")]
+        [Authorize]
         public IActionResult Delete([FromRoute] int id)
         {
             try
             {
+                Usuario usuario = _usuarioRepository.ObterPorId(id);
+                UsuarioService usuarioService = new();
+                usuarioService.EhAdmin(usuario);
+
                 _usuarioRepository.Deletar(id);
                 return Ok();
 
@@ -133,13 +120,15 @@ namespace FIAPCloudGamesApi.Controllers
 
                 // Depositar valor no saldo
                 var saldo = _usuarioRepository.Depositar(input.Id, input.Deposito);
-                return Ok($"Foi depositado {input.Deposito}. O novo saldo é de {saldo}");
+                return Ok($"Foi depositado {input.Deposito}. O novo saldo é de R$ {saldo}");
             }
             catch (Exception e)
             {
                 return BadRequest(e);
             }
         }
+
+
 
     }
 }

@@ -7,5 +7,7 @@ namespace Core.Repository
         Jogo VerificarSeJogoExiste(int id);
 
         Jogo VerificarSeJogoExiste(string nome);
+
+        List<Jogo> ObterTodosFiltro(string filtroNome);
     }
 }
