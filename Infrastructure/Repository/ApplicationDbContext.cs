@@ -26,6 +26,7 @@ namespace Infrastructure.Repository
         public DbSet<Jogo> Jogo { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<UsuarioJogo> UsuarioJogo { get; }
+        public DbSet<Promocao> Promocaos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -7,6 +7,6 @@
         public string? Descricao { get; set; }
         public decimal Preco {  get; set; }
         public decimal Desconto { get; set; }
-
+        public int? PromocaoId { get; set; }
     }
 }

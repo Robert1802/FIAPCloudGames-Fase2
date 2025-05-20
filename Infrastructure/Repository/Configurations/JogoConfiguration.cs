@@ -16,6 +16,7 @@ namespace Infrastructure.Repository.Configurations
             builder.Property(p => p.Preco).HasColumnType("DECIMAL(10,2)").IsRequired();
             builder.Property(p => p.Desconto).HasColumnType("DECIMAL(3,2)").IsRequired();
             builder.Property(p => p.DataCriacao).HasColumnName("DataCriacao").HasColumnType("DATETIME").IsRequired();
+            builder.HasOne<Promocao>().WithMany().HasForeignKey(j => j.PromocaoId);
         }
     }
 }

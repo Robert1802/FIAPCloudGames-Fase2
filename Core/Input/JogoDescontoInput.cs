@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Entity;
 
 namespace Core.Input
 {
     public class JogoDescontoInput
     {
         public int Id { get; set; }
-        public decimal Desconto { get; set; }
+        public required string Nome { get; set; }    
+        public required decimal ValorDesconto { get; set; }
+        public required int IdPromocao { get; set; }
+        
     }
 }

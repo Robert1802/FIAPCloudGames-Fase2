@@ -104,7 +104,6 @@ namespace FIAPCloudGamesApi.Controllers
                 throw new Exception("O nome do jogo informado já existe em nossos servidores");
         }
 
-        // Fazer check para ver se Usuario é Administrador
         [HttpPut]
         [Authorize(Roles = "Admin")]
         public IActionResult Put([FromBody] JogoUpdateInput input)
@@ -126,8 +125,8 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
-        // Fazer check para ver se Usuario é Administrador
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete([FromRoute] int id)
         {
             try
@@ -142,7 +141,6 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
-        // Fazer check para ver se Usuario é Administrador
         [HttpPut("desconto")]
         [Authorize(Roles = "Admin")]
         public IActionResult AtualizarDesconto([FromBody] JogoDescontoInput input)
@@ -152,10 +150,16 @@ namespace FIAPCloudGamesApi.Controllers
                 var jogo = _jogoRepository.ObterPorId(input.Id);
                 if (jogo != null)
                 {
-                    if (input.Desconto > 100 || input.Desconto < 0)
-                        return BadRequest("Valor de desconto indevido");
+                    if (input.ValorDesconto > 100 || input.ValorDesconto < 0)
+                        return BadRequest("Valor de desconto da promocao invalido");
 
-                    jogo.Desconto = input.Desconto/100;
+                    //if (input.DataInicio <= DateTime.Now && input.DataFim >= DateTime.Now)
+                    //{
+                    //    jogo.Desconto = input.ValorDesconto / 100;
+                    //}
+                    else return BadRequest();
+
+
                     _jogoRepository.Alterar(jogo);
                     return Ok();
                 }
