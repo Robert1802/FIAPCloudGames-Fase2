@@ -64,6 +64,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IJogoRepository, JogoRepository>();
 builder.Services.AddScoped<IUsuarioJogoRepository, UsuarioJogoRepository>();
+builder.Services.AddScoped<IPromocaoRepository, PromocaoRepository>();
 
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("Jwt")
