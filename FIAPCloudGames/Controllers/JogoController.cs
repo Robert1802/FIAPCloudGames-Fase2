@@ -41,7 +41,8 @@ namespace FIAPCloudGamesApi.Controllers
                         Descricao = jogo.Descricao,
                         Preco = jogo.Preco,
                         Desconto = jogo.Desconto,
-                        DataCriacao = jogo.DataCriacao
+                        DataCriacao = jogo.DataCriacao,
+                        PromocaoId = jogo.PromocaoId
                     });
                 }
 
@@ -78,7 +79,8 @@ namespace FIAPCloudGamesApi.Controllers
                     Empresa = input.Empresa,
                     Descricao = input.Descricao?.Trim() ?? string.Empty,
                     Preco = input.Preco,
-                    Desconto = 0
+                    Desconto = 0,
+                    PromocaoId = null
                 };
 
                 VerificaSeJogoExiste(jogo.Nome);
@@ -111,13 +113,16 @@ namespace FIAPCloudGamesApi.Controllers
             try
             {
                 Jogo jogo = _jogoRepository.ObterPorId(input.Id);
-                jogo.Nome = input.Nome;
-                jogo.Empresa = input.Empresa;
-                jogo.Descricao = input.Descricao;
-                jogo.Preco = input.Preco;
-                _jogoRepository.Alterar(jogo);
-                return Ok();
-
+                if (jogo is not null)
+                {
+                    jogo.Nome = input.Nome;
+                    jogo.Empresa = input.Empresa;
+                    jogo.Descricao = input.Descricao;
+                    jogo.Preco = input.Preco;
+                    _jogoRepository.Alterar(jogo);
+                    return Ok();
+                }
+                return BadRequest("Id fornecido não é associado a nenhum jogo");
             }
             catch (Exception e)
             {

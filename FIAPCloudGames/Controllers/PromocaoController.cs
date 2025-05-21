@@ -21,6 +21,7 @@ namespace FIAPCloudGamesApi.Controllers
 
 
         [HttpGet]
+        [Route("/ListaPromocoes")]
         public IActionResult Get() 
         {
             try
@@ -36,35 +37,36 @@ namespace FIAPCloudGamesApi.Controllers
         
 
         [HttpPost]
+        [Route("CriaPromocao/")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Post([FromBody] PromocaoDto promocaoDto)
+        public IActionResult Post([FromBody] PromocaoInput promocaoInput)
         {  
             try
             {
                 List<Jogo> jogosNaPromocao = [];
 
-                if(promocaoDto.IdJogo == null || !promocaoDto.IdJogo.Any())
+                if(promocaoInput.IdJogo == null || !promocaoInput.IdJogo.Any())
                     return BadRequest("Informe pelo menos um jogo para inserir na promoção");
 
-                foreach (var jogoId in promocaoDto.IdJogo)
+                foreach (var jogoId in promocaoInput.IdJogo)
                 {
                     jogosNaPromocao.Add(_jogoRepository.ObterPorId(jogoId));
                 }
 
-                if (jogosNaPromocao.Count != promocaoDto.IdJogo.Count)
+                if (jogosNaPromocao.Count != promocaoInput.IdJogo.Count)
                     return NotFound("Um ou mais jogos não foram encontrados.");
 
                 for (int i = 0; i < jogosNaPromocao.Count; i++)
                 {
-                    jogosNaPromocao[i].Desconto = promocaoDto.descontoJogo[i]/100;
+                    jogosNaPromocao[i].Desconto = promocaoInput.descontoJogo[i]/100;
                 }
 
 
                 var novaPromocao = new Promocao()
                 {
-                    Nome = promocaoDto.Nome,
-                    DataInicio = promocaoDto.DataInicio,
-                    DataFim = promocaoDto.DataFim,
+                    Nome = promocaoInput.Nome,
+                    DataInicio = promocaoInput.DataInicio,
+                    DataFim = promocaoInput.DataFim,
                     Jogos = jogosNaPromocao
                 };
 
@@ -101,8 +103,54 @@ namespace FIAPCloudGamesApi.Controllers
                 return false;
         }
 
-        //[HttpPut]
+        [HttpPut]
+        [Route("AtualizaPromocoes/")]
 
-        //[HttpDelete]
+        public IActionResult Put([FromBody] PromocaoDto promocaoDto)
+        {
+            try
+            {
+                Promocao promocao = _promocaoRepository.ObterPorId(promocaoDto.Id);
+                List<Jogo> jogosDaPromocao = [];
+
+                if (promocao is not null) 
+                {
+                    for (int i = 0; i < promocaoDto.IdJogo.Count; i++)
+                    {
+                        jogosDaPromocao.Add(_jogoRepository.ObterPorId(promocaoDto.IdJogo[i]));
+                        jogosDaPromocao[i].Desconto = promocaoDto.descontoJogo[i];
+                    }
+
+                    promocao.Nome = promocaoDto.Nome;
+                    promocao.DataInicio = promocaoDto.DataInicio;
+                    promocao.DataFim = promocaoDto.DataFim;
+                    promocao.Jogos = jogosDaPromocao;
+
+                    return Ok(promocao);
+                }
+                return BadRequest("Id fornecido não é associado a nenhuma promocao");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpDelete("DeletaPromocao/{id:int}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            try
+            {
+                _promocaoRepository.Deletar(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+            
+        }
     }
 }

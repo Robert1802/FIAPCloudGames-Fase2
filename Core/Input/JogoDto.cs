@@ -9,5 +9,6 @@
         public decimal Preco { get; set; }
         public decimal Desconto { get; set; }
         public DateTime DataCriacao { get; set; }
+        public int? PromocaoId { get; set; }
     }
 }
