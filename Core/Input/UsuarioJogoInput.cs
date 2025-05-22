@@ -1,8 +1,15 @@
-﻿namespace Core.Input
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Core.Input
 {
     public class UsuarioJogoInput
     {
-        public int IdUsuario { get; set; }
-        public int IdJogo { get; set; }
+        [Required]
+        public int UsuarioId { get; set; }
+
+        [Required]
+        public int JogoId { get; set; }
+
+        public int PromocaoId { get; set; }
     }
 }

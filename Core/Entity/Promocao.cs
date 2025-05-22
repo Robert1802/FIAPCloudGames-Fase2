@@ -24,7 +24,7 @@ namespace Core.Entity
         public int UsuarioId { get; set; }
         public virtual required Usuario Usuario { get; set; }
 
-        public virtual ICollection<JogosPromocoes> JogosPromocoes { get; set; }
-        public virtual ICollection<UsuarioJogo> UsuarioJogos { get; set; }
+        public virtual ICollection<JogosPromocoes>? JogosPromocoes { get; set; }
+        public virtual ICollection<UsuarioJogo>? UsuarioJogos { get; set; }
     }
 }
