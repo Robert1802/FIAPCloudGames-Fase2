@@ -16,6 +16,8 @@ using System.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.ApplicationInsights;
+using Core.Utils;
+using Core.Entity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -129,12 +131,32 @@ builder.Host.UseSerilog((context, services, loggerConfig) =>
 
 var app = builder.Build();
 
-//Verifica e sincroniza as migrations
-//(cuidado, pode excluir suas tabelas se tiver tabelas removidas na migration)
+//Verifica, sincroniza as migrations e adiciona o usuário admin caso não exista
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.Migrate();
+
+    var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+    var adminEmail = config["SeedAdmin:Email"];
+    var adminSenha = config["SeedAdmin:Senha"];
+    var adminNome = config["SeedAdmin:Nome"];
+
+    if (!dbContext.Usuario.Any(u => u.Email == adminEmail))
+    {
+        var admin = new Usuario
+        {
+            Nome = adminNome,
+            Email = adminEmail,
+            Senha = PasswordHelper.HashSenha(adminSenha!),
+            NivelAcesso = "Admin",
+            Saldo = 0
+        };
+
+        dbContext.Usuario.Add(admin);
+        dbContext.SaveChanges();
+    }    
 }
 
 // Configure the HTTP request pipeline.

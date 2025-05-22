@@ -4,33 +4,34 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Repository.Configurations
 {
-    public class UsuarioJogoConfiguration : IEntityTypeConfiguration<UsuarioJogo>
+    public class JogosPromocoesConfiguration : IEntityTypeConfiguration<JogosPromocoes>
     {
-        public void Configure(EntityTypeBuilder<UsuarioJogo> builder)
+        public void Configure(EntityTypeBuilder<JogosPromocoes> builder)
         {
-            builder.ToTable("UsuarioJogo");
+            builder.ToTable("JogosPromocoes");
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id).HasColumnType("INT").UseIdentityColumn();
-            builder.Property(p => p.UsuarioId).HasColumnType("INT").IsRequired();
             builder.Property(p => p.JogoId).HasColumnType("INT").IsRequired();
-            builder.Property(p => p.PrecoDaCompra).HasColumnType("DECIMAL(10,0)").IsRequired();
+            builder.Property(p => p.PromocaoId).HasColumnType("INT").IsRequired();
+            builder.Property(p => p.UsuarioId).HasColumnType("INT").IsRequired();
+            builder.Property(p => p.Desconto).HasColumnType("DECIMAL(18,2)").IsRequired();
             builder.Property(p => p.DataCriacao).HasColumnType("DATETIME").IsRequired();
 
             builder.HasOne(p => p.Usuario)
-                   .WithMany(u => u.UsuarioJogos)
+                   .WithMany(u => u.JogosPromocoes)
                    .HasForeignKey(p => p.UsuarioId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(p => p.Jogo)
-                   .WithMany(j => j.UsuarioJogos)
+                   .WithMany(j => j.JogosPromocoes)
                    .HasForeignKey(p => p.JogoId)
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(p => p.Promocao)
-                   .WithMany(pr => pr.UsuarioJogos)
+                   .WithMany(pr => pr.JogosPromocoes)
                    .HasForeignKey(p => p.PromocaoId)
-                   .OnDelete(DeleteBehavior.SetNull);
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -50,9 +50,15 @@ namespace FIAPCloudGamesApi.Controllers
 
                     var usuarioJogoNovo = new UsuarioJogo()
                     {
-                        IdUsuario = input.IdUsuario,
-                        IdJogo = input.IdJogo,
-                        PrecoDaCompra = precoAtual
+                        UsuarioId = input.IdUsuario,
+                        JogoId = input.IdJogo,
+                        PrecoDaCompra = precoAtual,
+                        DataCriacao = DateTime.Now,
+                        Jogo = jogoAtual,
+                        Promocao = null,
+                        PromocaoId = 1,
+                        Usuario = Helpers.UsuarioLogadoHelper.ObterUsuarioLogado(User)
+
                     };
                     _usuarioJogoRepository.Cadastrar(usuarioJogoNovo);
                     return Ok(usuarioJogoNovo);
