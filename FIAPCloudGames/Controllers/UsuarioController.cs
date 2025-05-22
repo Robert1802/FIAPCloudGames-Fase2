@@ -97,7 +97,6 @@ namespace FIAPCloudGamesApi.Controllers
         }
 
         [HttpPut("adiministrador")]
-        [Authorize]
         [Authorize(Roles = "Admin")]
         public IActionResult TransformarEmAdmin([FromBody] UsuarioAdminInput input)
         {
@@ -128,9 +127,9 @@ namespace FIAPCloudGamesApi.Controllers
         {
             try
             {
-                var usuario = _usuarioRepository.ObterPorId(id);
-                if (usuario == null)
-                    return BadRequest("Usuário não encontrado.");
+                var validacao = ValidarAlteracaoUsuario(id, out var usuario);
+                if (validacao != null)
+                    return validacao;
 
                 _usuarioRepository.Deletar(id);
                 string mensagem = $"Usuario \"{usuario.Nome}\" deletado com sucesso!";
