@@ -8,7 +8,7 @@ namespace Infrastructure.Repository
         public UsuarioJogoRepository(ApplicationDbContext context) : base(context)
         {
         }
-        public UsuarioJogo ObterPorIdUsuarioIdJogo(int idUsuario, int idJogo)
+        public UsuarioJogo? ObterPorIdUsuarioIdJogo(int idUsuario, int idJogo)
         {
             return _dbSet.FirstOrDefault(entity => entity.UsuarioId == idUsuario && entity.JogoId == idJogo);
         }
