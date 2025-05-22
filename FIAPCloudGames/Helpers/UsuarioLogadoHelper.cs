@@ -19,7 +19,7 @@ public static class UsuarioLogadoHelper
         return new Usuario
         {
             Id = id,
-            NivelAcesso = nivelClaim ?? "Usuario"
+            NivelAcesso = nivelClaim ?? "Usuario"            
         };
     }
 

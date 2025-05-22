@@ -10,12 +10,19 @@ namespace Infrastructure.Repository.Configurations
         {
             builder.ToTable("Jogo");
             builder.HasKey(p => p.Id);
+
             builder.Property(p => p.Id).HasColumnType("INT").UseIdentityColumn();
             builder.Property(p => p.Nome).HasColumnType("VARCHAR(200)").IsRequired();
             builder.Property(p => p.Descricao).HasColumnType("VARCHAR(400)").IsRequired();
             builder.Property(p => p.Preco).HasColumnType("DECIMAL(10,2)").IsRequired();
             builder.Property(p => p.Desconto).HasColumnType("DECIMAL(3,2)").IsRequired();
-            builder.Property(p => p.DataCriacao).HasColumnName("DataCriacao").HasColumnType("DATETIME").IsRequired();
+            builder.Property(p => p.Empresa).HasColumnType("VARCHAR(100)").IsRequired(false);
+            builder.Property(p => p.DataCriacao).HasColumnType("DATETIME").IsRequired();
+
+            builder.HasOne(p => p.Usuario)
+                   .WithMany(u => u.Jogos)
+                   .HasForeignKey(p => p.UsuarioId)
+                   .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
