@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Core.Entity
 {
@@ -22,9 +23,14 @@ namespace Core.Entity
         [Required]
         [ForeignKey("Usuario")]
         public int UsuarioId { get; set; }
-        public virtual required Usuario Usuario { get; set; }
 
+        [JsonIgnore]
+        public virtual Usuario? Usuario { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<JogosPromocoes>? JogosPromocoes { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<UsuarioJogo>? UsuarioJogos { get; set; }
     }
 }

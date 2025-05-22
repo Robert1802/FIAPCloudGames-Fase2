@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Core.Entity
 {
@@ -26,9 +27,13 @@ namespace Core.Entity
         public decimal Saldo { get; set; }
 
         // Relacionamentos
+        [JsonIgnore]
         public virtual ICollection<UsuarioJogo> UsuarioJogos { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Promocao> Promocoes { get; set; }
+        [JsonIgnore]
         public virtual ICollection<JogosPromocoes> JogosPromocoes { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Jogo> Jogos { get; set; }
     }
 }
