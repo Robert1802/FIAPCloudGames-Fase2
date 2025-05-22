@@ -15,10 +15,13 @@ namespace FIAPCloudGamesApi.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly ILogger<UsuarioController> _logger;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository)
+        public UsuarioController(IUsuarioRepository usuarioRepository,
+                              ILogger<UsuarioController> logger)
         {
             _usuarioRepository = usuarioRepository;
+            _logger = logger;
         }
 
         [HttpGet("{id:int}")]
@@ -30,7 +33,9 @@ namespace FIAPCloudGamesApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                string mensagem = $"Erro ao tentar trazer um usuario utilizando o Id: {id}."; 
+                _logger.LogError(mensagem + " Detalhes: " + e.Message);
+                return BadRequest(mensagem);
             }
         }
 
@@ -48,17 +53,20 @@ namespace FIAPCloudGamesApi.Controllers
                     Saldo = 0
                 };
 
-                if (_usuarioRepository.ObterPorEmail(input.Email) == null)
-                {
-                    _usuarioRepository.Cadastrar(usuario);
-                    return Ok(usuario);
-                }
+                if (_usuarioRepository.ObterPorEmail(input.Email) != null)
+                    return BadRequest($"Ja existe um usuário utilizando o E-mail \"{input.Email}\" em nossa base de dados");
+                
+                _usuarioRepository.Cadastrar(usuario);
+                _logger.LogInformation($"Usuario \"{usuario.Nome}\" com email \"{usuario.Email}\" cadastrado com sucesso!");
+                return Ok(ApiResponse<Usuario>.Ok(usuario));
+                
 
-                return BadRequest("E-mail já cadastrado");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                string mensagem = $"Erro ao tentar cadastrar um usuario utilizando o e-mail: {input.Email}";
+                _logger.LogError(mensagem + " Detalhes: " + e.Message);
+                return BadRequest(mensagem);
             }
         }
 
@@ -77,11 +85,14 @@ namespace FIAPCloudGamesApi.Controllers
 
                 _usuarioRepository.Alterar(usuario);
 
+                _logger.LogInformation($"Usuario \"{input.Nome}\" alterado com sucesso!");
                 return Ok(ApiResponse<Usuario>.Ok(usuario));
             }
             catch (Exception e)
             {
-                return BadRequest(ApiResponse<string>.Falha(500, $"Erro inesperado: {e.Message}"));
+                string mensagem = $"Erro inesperado ao tentar alterar o usuario: {input.Nome}.";
+                _logger.LogError(mensagem + "Detalhes: " + e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
         }
 
@@ -100,11 +111,14 @@ namespace FIAPCloudGamesApi.Controllers
 
                 _usuarioRepository.Alterar(usuario);
 
+                _logger.LogInformation($"Usuario \"{usuario.Nome}\" agora é Admin!");
                 return Ok(ApiResponse<Usuario>.Ok(usuario));
             }
             catch (Exception e)
             {
-                return BadRequest(ApiResponse<string>.Falha(500, $"Erro inesperado: {e.Message}"));
+                string mensagem = $"Erro inesperado ao tentar alterar o usuario de Id: {input.IdUsuario}.";
+                _logger.LogError(mensagem + "Detalhes: " + e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
         }
 
@@ -119,11 +133,15 @@ namespace FIAPCloudGamesApi.Controllers
                     return BadRequest("Usuário não encontrado.");
 
                 _usuarioRepository.Deletar(id);
-                return Ok();
+                string mensagem = $"Usuario \"{usuario.Nome}\" deletado com sucesso!";
+                _logger.LogInformation(mensagem);
+                return Ok(ApiResponse<string>.Ok(mensagem));
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                string mensagem = $"Erro inesperado ao tentar deletar o usuario de Id: {id}.";
+                _logger.LogError(mensagem + "Detalhes: " + e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
         }
 
@@ -139,11 +157,15 @@ namespace FIAPCloudGamesApi.Controllers
                     return BadRequest($"Valor de R$ {input.Deposito} inválido.");
 
                 var saldo = _usuarioRepository.Depositar(input.Id, input.Deposito);
-                return Ok($"Foi depositado R$ {input.Deposito}. O novo saldo é de R$ {saldo}");
+                string mensagem = $"Foi depositado R${input.Deposito} para o usuario de Id: {input.Id}. O saldo atual é de é de R${saldo}";
+                _logger.LogInformation(mensagem);
+                return Ok(ApiResponse<string>.Ok(mensagem));
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                string mensagem = $"Erro inesperado ao tentar depositar {input.Deposito} para o usuario de Id: {input.Id}.";
+                _logger.LogError(mensagem + "Detalhes: " + e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
         }
 

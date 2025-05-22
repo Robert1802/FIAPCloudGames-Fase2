@@ -7,6 +7,15 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Context;
+using Serilog.Sinks.MSSqlServer;
+using Serilog.Events;
+using System.Collections.ObjectModel;
+using System.Data;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +40,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "**IMPORTANTE:** cole apenas o token JWT. O prefixo 'Bearer' será adicionado automaticamente."
+        Description = "**IMPORTANTE:** Cole apenas o token JWT. O prefixo 'Bearer' será adicionado automaticamente."
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -69,10 +78,9 @@ builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("Jwt")
 );
 
+// Auth
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
-
 builder.Services.AddSingleton<TokenService>();
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -87,8 +95,37 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings!.ChaveSecreta))
         };
     });
-
 builder.Services.AddAuthorization();
+
+// Configure Serilog
+var columnOptions = new ColumnOptions
+{
+    Store = new Collection<StandardColumn>
+    {
+        StandardColumn.Id,
+        StandardColumn.Message,
+        StandardColumn.MessageTemplate,
+        StandardColumn.Level,
+        StandardColumn.TimeStamp,
+        StandardColumn.Exception,
+        StandardColumn.Properties
+    }
+};
+
+
+builder.Host.UseSerilog((context, services, loggerConfig) =>
+{
+    loggerConfig
+        .WriteTo.MSSqlServer(
+            connectionString: context.Configuration.GetConnectionString("ConnectionString"),
+            sinkOptions: new MSSqlServerSinkOptions
+            {
+                TableName = "Logs",
+                AutoCreateSqlTable = false
+            },
+            columnOptions: columnOptions
+        );
+});
 
 var app = builder.Build();
 

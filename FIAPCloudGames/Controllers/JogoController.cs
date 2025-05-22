@@ -1,6 +1,7 @@
 ﻿using Core.Entity;
 using Core.Input;
 using Core.Repository;
+using Core.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,13 +12,14 @@ namespace FIAPCloudGamesApi.Controllers
     public class JogoController : ControllerBase
     {
         private readonly IJogoRepository _jogoRepository;
+        private readonly ILogger<JogoController> _logger;
 
-        public JogoController(IJogoRepository jogoRepository)
+        public JogoController(IJogoRepository jogoRepository,
+                              ILogger<JogoController> logger)
         {
             _jogoRepository = jogoRepository;
+            _logger = logger;
         }
-
-
 
         [HttpGet]
         public IActionResult Get([FromQuery] string? filtroNome)
@@ -49,12 +51,14 @@ namespace FIAPCloudGamesApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                string mensagem = "Erro ao tentar trazer todos os Jogos.";
+                _logger.LogError(mensagem + " Detalhes: " + e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult Get([FromRoute] int id) // ou Get(int id)
+        public IActionResult Get([FromRoute] int id)
         {
             try
             {
@@ -62,12 +66,14 @@ namespace FIAPCloudGamesApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                string mensagem = $"Erro ao tentar trazer um Jogo utilizando o Id: {id}";
+                _logger.LogError(mensagem + " Detalhes: " + e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
         }
 
         [HttpPost]
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Post([FromBody] JogoInput input)
         {
             try
@@ -84,15 +90,21 @@ namespace FIAPCloudGamesApi.Controllers
                 VerificaSeJogoExiste(jogo.Nome);
 
                 _jogoRepository.Cadastrar(jogo);
+
+                _logger.LogInformation($"Jogo \"{jogo.Nome}\" cadastrado com sucesso!");
                 return Ok(jogo);
             }
-            catch (Exception e) when ((e.Message ?? string.Empty).Contains("O nome do jogo informado já existe em nossos servidores"))
+            catch (Exception e) when ((e.Message ?? string.Empty).Contains("já existe em nossos servidores"))
             {
-                return BadRequest(e.Message);
+                string mensagem = $"O jogo \"{input.Nome}\" já existe em nossos servidores.";
+                _logger.LogError(mensagem + " Detalhes: " + e.Message);
+                return BadRequest(mensagem);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                string mensagem = $"Um erro ocorreu ao tentar cadastrar o jogo: \"{input.Nome}\".";
+                _logger.LogError(mensagem + " Detalhes: " + e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
         }
 
@@ -117,12 +129,16 @@ namespace FIAPCloudGamesApi.Controllers
                 jogo.Descricao = input.Descricao;
                 jogo.Preco = input.Preco;
                 _jogoRepository.Alterar(jogo);
-                return Ok();
+                string mensagem = $"Jogo \"{jogo.Nome}\" atualizado com sucesso!";
+                _logger.LogInformation(mensagem);
+                return Ok(mensagem);
 
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                string mensagem = $"Um erro ocorreu ao tentar atualizar o jogo: \"{input.Nome}\".";
+                _logger.LogError(mensagem + " Detalhes: " + e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
         }
 
@@ -133,12 +149,16 @@ namespace FIAPCloudGamesApi.Controllers
             try
             {
                 _jogoRepository.Deletar(id);
-                return Ok();
+                string mensagem = $"Jogo de Id \"{id}\" deletado com sucesso!";
+                _logger.LogInformation(mensagem);
+                return Ok(ApiResponse<string>.Ok(mensagem));
 
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                string mensagem = $"Um erro ocorreu ao tentar deletar o jogo de Id: \"{id}\".";
+                _logger.LogError(mensagem + " Detalhes: " + e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
         }
 
@@ -152,11 +172,13 @@ namespace FIAPCloudGamesApi.Controllers
                 if (jogo != null)
                 {
                     if (input.Desconto > 100 || input.Desconto < 0)
-                        return BadRequest("Valor de desconto indevido");
+                        return BadRequest($"Valor de desconto indevido de {input.Desconto}% para o jogo \"{jogo.Nome}\". O valor precisa estar entre 0 e 100%");
 
-                    jogo.Desconto = input.Desconto/100;
+                    jogo.Desconto = input.Desconto / 100;
                     _jogoRepository.Alterar(jogo);
-                    return Ok();
+                    string mensagem = $"Valor de desconto de {input.Desconto}% para o jogo \"{jogo.Nome}\" cadastrado com sucesso.";
+                    _logger.LogInformation(mensagem);
+                    return Ok(ApiResponse<string>.Ok(mensagem));
                 }
                 else
                 {
@@ -166,11 +188,10 @@ namespace FIAPCloudGamesApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                string mensagem = $"Um erro ocorreu ao tentar criar um desconto de {input.Desconto}% para o jogo de Id: {input.Id}.";
+                _logger.LogError(mensagem + " Detalhes: " + e.Message);
+                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
         }
-
-
-
     }
 }
