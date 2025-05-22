@@ -8,12 +8,12 @@ namespace Core.Entity
         [Required]
         [ForeignKey("Usuario")]
         public int UsuarioId { get; set; }
-        public virtual required Usuario Usuario { get; set; }
+        public virtual Usuario? Usuario { get; set; }
 
         [Required]
         [ForeignKey("Jogo")]
         public int JogoId { get; set; }
-        public virtual required Jogo Jogo { get; set; }
+        public virtual Jogo? Jogo { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(10, 0)")]

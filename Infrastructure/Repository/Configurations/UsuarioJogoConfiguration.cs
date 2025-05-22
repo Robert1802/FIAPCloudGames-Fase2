@@ -14,7 +14,7 @@ namespace Infrastructure.Repository.Configurations
             builder.Property(p => p.Id).HasColumnType("INT").UseIdentityColumn();
             builder.Property(p => p.UsuarioId).HasColumnType("INT").IsRequired();
             builder.Property(p => p.JogoId).HasColumnType("INT").IsRequired();
-            builder.Property(p => p.PrecoDaCompra).HasColumnType("DECIMAL(10,0)").IsRequired();
+            builder.Property(p => p.PrecoDaCompra).HasColumnType("DECIMAL(10,2)").IsRequired();
             builder.Property(p => p.DataCriacao).HasColumnType("DATETIME").IsRequired();
 
             builder.HasOne(p => p.Usuario)
