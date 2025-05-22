@@ -12,10 +12,10 @@ namespace Infrastructure.Repository
         {
         }
 
-        public Jogo VerificarSeJogoExiste(int id) => 
+        public Jogo? VerificarSeJogoExiste(int id) => 
             _dbSet.FirstOrDefault(entity => entity.Id == id);
 
-        public Jogo VerificarSeJogoExiste(string nome) =>
+        public Jogo? VerificarSeJogoExiste(string nome) =>
             _dbSet.FirstOrDefault(entity => entity.Nome == nome);
 
         public List<Jogo> ObterTodosFiltro(string filtroNome) =>

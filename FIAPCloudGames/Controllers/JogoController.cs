@@ -2,6 +2,7 @@
 using Core.Input;
 using Core.Repository;
 using Core.Responses;
+using FIAPCloudGamesApi.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -77,14 +78,15 @@ namespace FIAPCloudGamesApi.Controllers
         public IActionResult Post([FromBody] JogoInput input)
         {
             try
-            {
+            {  
                 var jogo = new Jogo()
                 {
                     Nome = input.Nome?.Trim() ?? string.Empty,
                     Empresa = input.Empresa,
                     Descricao = input.Descricao?.Trim() ?? string.Empty,
                     Preco = input.Preco,
-                    Desconto = 0
+                    Desconto = 0,
+                    UsuarioId = UsuarioLogadoHelper.ObterUsuarioLogado(User)!.Id
                 };
 
                 VerificaSeJogoExiste(jogo.Nome);
@@ -124,11 +126,14 @@ namespace FIAPCloudGamesApi.Controllers
             try
             {
                 Jogo jogo = _jogoRepository.ObterPorId(input.Id);
-                jogo.Nome = input.Nome;
+                jogo.Nome = input.Nome.Trim();
                 jogo.Empresa = input.Empresa;
-                jogo.Descricao = input.Descricao;
+                jogo.Descricao = input.Descricao.Trim();
                 jogo.Preco = input.Preco;
+                jogo.UsuarioId = UsuarioLogadoHelper.ObterUsuarioLogado(User)!.Id;
+
                 _jogoRepository.Alterar(jogo);
+
                 string mensagem = $"Jogo \"{jogo.Nome}\" atualizado com sucesso!";
                 _logger.LogInformation(mensagem);
                 return Ok(mensagem);

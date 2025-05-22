@@ -8,14 +8,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using Serilog.Context;
 using Serilog.Sinks.MSSqlServer;
-using Serilog.Events;
 using System.Collections.ObjectModel;
-using System.Data;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.ApplicationInsights;
 using Core.Utils;
 using Core.Entity;
 
@@ -75,6 +69,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IJogoRepository, JogoRepository>();
 builder.Services.AddScoped<IUsuarioJogoRepository, UsuarioJogoRepository>();
+builder.Services.AddScoped<IPromocaoRepository, PromocaoRepository>();
+builder.Services.AddScoped<IJogosPromocoes, JogosPromocoesRepository>();
 
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("Jwt")
@@ -114,7 +110,6 @@ var columnOptions = new ColumnOptions
     }
 };
 
-
 builder.Host.UseSerilog((context, services, loggerConfig) =>
 {
     loggerConfig
@@ -140,15 +135,15 @@ using (var scope = app.Services.CreateScope())
     var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
     var adminEmail = config["SeedAdmin:Email"];
-    var adminSenha = config["SeedAdmin:Senha"];
+    var adminSenha = Encoding.UTF8.GetString(Convert.FromBase64String(config["SeedAdmin:Senha"]!));
     var adminNome = config["SeedAdmin:Nome"];
 
     if (!dbContext.Usuario.Any(u => u.Email == adminEmail))
     {
         var admin = new Usuario
         {
-            Nome = adminNome,
-            Email = adminEmail,
+            Nome = adminNome!,
+            Email = adminEmail!,
             Senha = PasswordHelper.HashSenha(adminSenha!),
             NivelAcesso = "Admin",
             Saldo = 0
