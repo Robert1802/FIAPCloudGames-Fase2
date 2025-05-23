@@ -17,7 +17,9 @@ namespace Core.Validators
 
             RuleFor(x => x.Desconto)
                 .GreaterThan(0)
-                .WithMessage("O desconto deve ser maior que 0.");
+                .WithMessage("O desconto deve ser maior que 0.")
+                .LessThanOrEqualTo(100)
+                .WithMessage("O desconto deve ser menor ou igual a 100.");
         }
     }
 }
