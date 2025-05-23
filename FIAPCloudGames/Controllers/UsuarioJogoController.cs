@@ -15,13 +15,13 @@ namespace FIAPCloudGamesApi.Controllers
         private readonly IUsuarioJogoRepository _usuarioJogoRepository;
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IJogoRepository _jogoRepository;
-        private readonly IJogosPromocoes _jogosPromocoesRepository;
+        private readonly IJogosPromocoesRepository _jogosPromocoesRepository;
         private readonly ILogger<UsuarioController> _logger;
 
         public UsuarioJogoController(IUsuarioJogoRepository usuarioJogoRepository,
                                      IUsuarioRepository usuarioRepository,
                                      IJogoRepository jogoRepository,
-                                     IJogosPromocoes jogosPromocoes,
+                                     IJogosPromocoesRepository jogosPromocoes,
                                      ILogger<UsuarioController> logger)
         {
             _usuarioJogoRepository = usuarioJogoRepository;

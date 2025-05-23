@@ -12,6 +12,9 @@ using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
 using Core.Utils;
 using Core.Entity;
+using Core.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,7 +73,10 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IJogoRepository, JogoRepository>();
 builder.Services.AddScoped<IUsuarioJogoRepository, UsuarioJogoRepository>();
 builder.Services.AddScoped<IPromocaoRepository, PromocaoRepository>();
-builder.Services.AddScoped<IJogosPromocoes, JogosPromocoesRepository>();
+builder.Services.AddScoped<IJogosPromocoesRepository, JogosPromocoesRepository>();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<JogosPromocoesInputValidator>();
 
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("Jwt")

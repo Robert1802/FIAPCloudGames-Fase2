@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
-    public sealed class JogosPromocoesRepository : EFREpository<JogosPromocoes>, IJogosPromocoes
+    public sealed class JogosPromocoesRepository : EFREpository<JogosPromocoes>, IJogosPromocoesRepository
     {
         public JogosPromocoesRepository(ApplicationDbContext context) : base(context)
         {

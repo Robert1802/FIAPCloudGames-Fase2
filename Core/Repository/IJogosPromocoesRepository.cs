@@ -2,7 +2,7 @@
 
 namespace Core.Repository
 {
-    public interface IJogosPromocoes
+    public interface IJogosPromocoesRepository : IRepository<JogosPromocoes>
     {
         JogosPromocoes? ObterPromocaoAtivaDoJogo(int jogoId, int PromocaoId);
     }
