@@ -24,6 +24,8 @@
 
 ## DDD - Event Storming
 
+[Diagrama de Envent Storm de cadastro de Usuário e Cadastro de Jogos no Miro](https://miro.com/app/board/uXjVIxoFegg=/)
+
 ## Setup do Banco de Dados e Migrações
 
 - No Package Manager Console escolha o "Default Project" como "Infrastructure"
