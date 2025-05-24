@@ -42,8 +42,7 @@ namespace FIAPCloudGamesApi.Controllers
                         Nome = jogo.Nome,
                         Empresa = jogo.Empresa,
                         Descricao = jogo.Descricao,
-                        Preco = jogo.Preco,
-                        Desconto = jogo.Desconto,
+                        Preco = jogo.Preco,                        
                         DataCriacao = jogo.DataCriacao
                     });
                 }
@@ -165,38 +164,6 @@ namespace FIAPCloudGamesApi.Controllers
                 _logger.LogError(mensagem + " Detalhes: " + e.Message);
                 return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
-        }
-
-        [HttpPut("desconto")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult AtualizarDesconto([FromBody] JogoDescontoInput input)
-        {
-            try
-            {
-                var jogo = _jogoRepository.ObterPorId(input.Id);
-                if (jogo != null)
-                {
-                    if (input.Desconto > 100 || input.Desconto < 0)
-                        return BadRequest($"Valor de desconto indevido de {input.Desconto}% para o jogo \"{jogo.Nome}\". O valor precisa estar entre 0 e 100%");
-
-                    jogo.Desconto = input.Desconto / 100;
-                    _jogoRepository.Alterar(jogo);
-                    string mensagem = $"Valor de desconto de {input.Desconto}% para o jogo \"{jogo.Nome}\" cadastrado com sucesso.";
-                    _logger.LogInformation(mensagem);
-                    return Ok(ApiResponse<string>.Ok(mensagem));
-                }
-                else
-                {
-                    return BadRequest($"Id {input.Id} de Jogo inexistente.");
-                }
-
-            }
-            catch (Exception e)
-            {
-                string mensagem = $"Um erro ocorreu ao tentar criar um desconto de {input.Desconto}% para o jogo de Id: {input.Id}.";
-                _logger.LogError(mensagem + " Detalhes: " + e.Message);
-                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
-            }
-        }
+        }        
     }
 }
