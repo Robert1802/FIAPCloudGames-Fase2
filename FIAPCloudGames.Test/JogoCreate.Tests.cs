@@ -19,20 +19,7 @@ public class JogoCreateTest
     {
         _jogoRepositoryMock = new Mock<IJogoRepository>();
         _loggerMock = new Mock<ILogger<JogoController>>();
-        _controller = new JogoController(_jogoRepositoryMock.Object, _loggerMock.Object);
-
-        // Mock de usuário logado
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.NameIdentifier, "123"),
-            new Claim(ClaimTypes.Name, "Test User"),
-            new Claim(ClaimTypes.Role, "Admin")
-        }, "mock"));
-
-        _controller.ControllerContext = new ControllerContext()
-        {
-            HttpContext = new DefaultHttpContext() { User = user }
-        };
+        _controller = new JogoController(_jogoRepositoryMock.Object, _loggerMock.Object);                
     }
 
     [Fact]
@@ -93,5 +80,5 @@ public class JogoCreateTest
         badRequest.Value.Should().Be($"O jogo \"{input.Nome}\" já existe em nossos servidores.");
 
         _jogoRepositoryMock.Verify(r => r.Cadastrar(It.IsAny<Jogo>()), Times.Once);
-    }
+    }    
 }
