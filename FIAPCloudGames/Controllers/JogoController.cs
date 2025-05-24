@@ -73,7 +73,7 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Cadastrar")]
         [Authorize(Roles = "Admin")]
         public IActionResult Post([FromBody] JogoInput input)
         {
