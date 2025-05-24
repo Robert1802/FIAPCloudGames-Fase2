@@ -130,7 +130,7 @@ namespace FIAPCloudGamesApi.Controllers
                 jogo.Empresa = input.Empresa;
                 jogo.Descricao = input.Descricao.Trim();
                 jogo.Preco = input.Preco;
-                jogo.UsuarioId = UsuarioLogadoHelper.ObterUsuarioLogado(User)!.Id;
+                jogo.UsuarioId = 1;
 
                 _jogoRepository.Alterar(jogo);
 
