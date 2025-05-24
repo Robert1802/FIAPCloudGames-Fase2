@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{78AA8165-8AC0-48E2-A73F-090344C01531}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIAPCloudGames.Test", "FIAPCloudGames.Test\FIAPCloudGames.Test.csproj", "{D511DA7C-9339-456D-B33B-7DA4CBDE8540}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{78AA8165-8AC0-48E2-A73F-090344C01531}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78AA8165-8AC0-48E2-A73F-090344C01531}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78AA8165-8AC0-48E2-A73F-090344C01531}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D511DA7C-9339-456D-B33B-7DA4CBDE8540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D511DA7C-9339-456D-B33B-7DA4CBDE8540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D511DA7C-9339-456D-B33B-7DA4CBDE8540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D511DA7C-9339-456D-B33B-7DA4CBDE8540}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
