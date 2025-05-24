@@ -46,6 +46,9 @@ namespace FIAPCloudGamesApi.Controllers
 
                 };
 
+                VerificaSePromocaoExiste(promocao.Nome);
+                ValidaPeriodoPromocao(promocao.DataInicio, promocao.DataFim);
+
                 _promocaoRepository.Cadastrar(promocao);
                 _logger.LogInformation("Promoção criada com sucesso. PromoçãoId: {PromocaoId}, CriadaPor: {UsuarioId}",
                     promocao.Id, usuarioLogado.Id);
@@ -58,6 +61,18 @@ namespace FIAPCloudGamesApi.Controllers
                 return StatusCode(500, ApiResponse<string>.Falha(StatusCodes.Status500InternalServerError, $"Erro interno: {e.Message}"));
             }
         }
+        private void VerificaSePromocaoExiste(string nome)
+        {
+            var promocao = _promocaoRepository.VerificarSePromocaoExiste(nome);
+            if (promocao is not null) throw new Exception("O nome da promoção informada já existe em nossos servidores");
+        }
+        private void ValidaPeriodoPromocao(DateTime DtInicio, DateTime DtFim)
+        {
+            if (!(DtInicio <= DtFim && DtFim >= DtInicio))
+                throw new Exception("Datas da promoção inválidas");
+        }
+
+
 
         [HttpGet("Obter/{id}")]
         [ProducesResponseType(typeof(ApiResponse<Promocao>), StatusCodes.Status200OK)]

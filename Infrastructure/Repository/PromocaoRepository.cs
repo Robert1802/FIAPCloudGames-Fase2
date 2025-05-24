@@ -1,5 +1,6 @@
 ﻿using Core.Entity;
 using Core.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
@@ -8,5 +9,8 @@ namespace Infrastructure.Repository
         public PromocaoRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public Promocao? VerificarSePromocaoExiste(string nome) => _dbSet.FirstOrDefault(entity => entity.Nome == nome);
+        
     }
 }
