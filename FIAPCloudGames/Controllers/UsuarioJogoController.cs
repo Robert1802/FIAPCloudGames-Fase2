@@ -79,7 +79,7 @@ namespace FIAPCloudGamesApi.Controllers
 
                 var promocao = _jogosPromocoesRepository.ObterPromocaoAtivaDoJogo(input.JogoId, input.PromocaoId);
                 var descontoAplicado = promocao?.Desconto ?? 0;
-                var precoFinal = (jogo.Preco * (1 - descontoAplicado))/100;
+                var precoFinal = (jogo.Preco * ((1 - descontoAplicado) / 100));
 
                 _logger.LogInformation("Preço final calculado para JogoId {JogoId}: {PrecoFinal} (Desconto aplicado: {Desconto})",
                     input.JogoId, precoFinal, descontoAplicado);

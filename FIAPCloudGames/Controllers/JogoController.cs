@@ -83,8 +83,7 @@ namespace FIAPCloudGamesApi.Controllers
                     Nome = input.Nome?.Trim() ?? string.Empty,
                     Empresa = input.Empresa,
                     Descricao = input.Descricao?.Trim() ?? string.Empty,
-                    Preco = input.Preco,
-                    Desconto = 0,
+                    Preco = input.Preco,                    
                     UsuarioId = UsuarioLogadoHelper.ObterUsuarioLogado(User)!.Id
                 };
 
@@ -105,7 +104,7 @@ namespace FIAPCloudGamesApi.Controllers
             {
                 string mensagem = $"Um erro ocorreu ao tentar cadastrar o jogo: \"{input.Nome}\".";
                 _logger.LogError(mensagem + " Detalhes: " + e.Message);
-                return BadRequest(ApiResponse<string>.Falha(500, mensagem));
+                return BadRequest(ApiResponse<string>.Falha(StatusCodes.Status400BadRequest, mensagem));
             }
         }
 

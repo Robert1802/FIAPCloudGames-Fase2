@@ -32,8 +32,7 @@ namespace FIAPCloudGames.Test
                 Nome = "Minecraft",
                 Empresa = "Mojang",
                 Descricao = "Jogo de blocos",
-                Preco = 100,
-                Desconto = 0,
+                Preco = 100,                
                 DataCriacao = DateTime.Now
             };
 

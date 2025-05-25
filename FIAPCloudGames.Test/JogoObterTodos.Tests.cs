@@ -28,8 +28,8 @@ namespace FIAPCloudGames.Test
             // Arrange
             var jogos = new List<Jogo>
             {
-                new() { Id = 1, Nome = "Minecraft", Empresa = "Mojang", Descricao = "Blocos", Preco = 100, Desconto = 0, DataCriacao = DateTime.Now },
-                new() { Id = 2, Nome = "CS2", Empresa = "Valve", Descricao = "FPS", Preco = 200, Desconto = 0, DataCriacao = DateTime.Now }
+                new() { Id = 1, Nome = "Minecraft", Empresa = "Mojang", Descricao = "Blocos", Preco = 100,  DataCriacao = DateTime.Now },
+                new() { Id = 2, Nome = "CS2", Empresa = "Valve", Descricao = "FPS", Preco = 200, DataCriacao = DateTime.Now }
             };
 
             _jogoRepositoryMock.Setup(r => r.ObterTodos()).Returns(jogos);
@@ -51,7 +51,7 @@ namespace FIAPCloudGames.Test
             string filtro = "Minecraft";
             var jogos = new List<Jogo>
             {
-                new() { Id = 1, Nome = "Minecraft", Empresa = "Mojang", Descricao = "Blocos", Preco = 100, Desconto = 0, DataCriacao = DateTime.Now }
+                new() { Id = 1, Nome = "Minecraft", Empresa = "Mojang", Descricao = "Blocos", Preco = 100, DataCriacao = DateTime.Now }
             };
 
             _jogoRepositoryMock.Setup(r => r.ObterTodosFiltro(filtro)).Returns(jogos);
