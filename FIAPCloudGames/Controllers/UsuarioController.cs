@@ -96,7 +96,7 @@ namespace FIAPCloudGamesApi.Controllers
             }
         }
 
-        [HttpPut("adiministrador")]
+        [HttpPut("administrador")]
         [Authorize(Roles = "Admin")]
         public IActionResult TransformarEmAdmin([FromBody] UsuarioAdminInput input)
         {

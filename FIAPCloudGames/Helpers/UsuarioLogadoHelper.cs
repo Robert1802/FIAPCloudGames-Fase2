@@ -10,10 +10,11 @@ public static class UsuarioLogadoHelper
         if (UsuarioNaoEstaAutenticado(user))
             return null;
 
-        var idClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var nameIdentifier = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var nivelClaim = user.FindFirst(ClaimTypes.Role)?.Value;
 
-        if (!int.TryParse(idClaim, out var id))
+        if (string.IsNullOrWhiteSpace(nameIdentifier) || 
+            !int.TryParse(nameIdentifier, out var id))
             return null;
 
         return new Usuario

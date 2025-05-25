@@ -36,6 +36,22 @@ namespace FIAPCloudGamesApi.Controllers
                     return Unauthorized(ApiResponse<string>.Falha(StatusCodes.Status401Unauthorized, "Usuário não autorizado"));
                 }
 
+                var dataFimMenorOuIgualADataInicio = input.DataFim <= input.DataInicio;                
+                if (dataFimMenorOuIgualADataInicio)
+                {
+                    _logger.LogWarning("DataFim não pode ser menor ou igual a DataInicio. DataInicio: {DataInicio}, DataFim: {DataFim}", input.DataInicio, input.DataFim);
+                    return BadRequest(ApiResponse<string>
+                        .Falha(StatusCodes.Status400BadRequest, "A data de término deve ser maior que a data de início."));
+                }
+
+                var existePromocaoComNome = _promocaoRepository.ExistePromocaoComNome(input.Nome);
+                if (existePromocaoComNome)
+                {
+                    _logger.LogWarning("Já existe uma promoção com o nome {Nome}", input.Nome);
+                    return Conflict(ApiResponse<string>
+                        .Falha(StatusCodes.Status409Conflict, "Já existe uma promoção com este nome."));
+                }
+
                 var promocao = new Promocao
                 {
                     Nome = input.Nome,

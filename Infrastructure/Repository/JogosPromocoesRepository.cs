@@ -16,6 +16,7 @@ namespace Infrastructure.Repository
 
             return _dbSet
                 .Include(x => x.Promocao)
+                .AsNoTracking()
                 .FirstOrDefault(x =>
                     x.JogoId == jogoId &&
                     x.Promocao.Ativo &&
@@ -24,5 +25,19 @@ namespace Infrastructure.Repository
                     (PromocaoId == 0 || x.Promocao.Id == PromocaoId)
                 );
         }
+
+        public bool ExistePromocaoAtivaParaOJogo(int jogoId)
+        {
+            var dataAtual = DateTime.Now;
+
+            return _dbSet
+                .Include(x => x.Promocao)
+                .AsNoTracking()
+                .Any(x => x.JogoId == jogoId &&
+                x.Promocao.Ativo == true &&
+                x.Promocao.DataInicio >= dataAtual &&
+                x.Promocao.DataFim <= dataAtual);
+        }
+
     }
 }

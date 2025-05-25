@@ -16,10 +16,7 @@ namespace Core.Entity
 
         [Required]
         [Column(TypeName = "decimal(10, 2)")]
-        public decimal Preco { get; set; }
-                
-        [Column(TypeName = "decimal(3, 2)")]
-        public decimal Desconto { get; set; }
+        public decimal Preco { get; set; }                
 
         public string? Empresa { get; set; }
 

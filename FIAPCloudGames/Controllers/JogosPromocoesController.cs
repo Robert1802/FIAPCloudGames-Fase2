@@ -3,6 +3,7 @@ using Core.Input;
 using Core.Repository;
 using Core.Responses;
 using FIAPCloudGamesApi.Helpers;
+using Infrastructure.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,18 +15,18 @@ namespace FIAPCloudGamesApi.Controllers
     {
         private readonly IJogoRepository _jogoRepository;
         private readonly IPromocaoRepository _promocaoRepository;
-        private readonly IJogosPromocoesRepository _jogosPromcoesRepository;
+        private readonly IJogosPromocoesRepository _jogosPromocoesRepository;
         private readonly ILogger<JogosPromocoesController> _logger;
 
         public JogosPromocoesController(
             IJogoRepository jogoRepository, 
             IPromocaoRepository promocaoRepository,
-            IJogosPromocoesRepository repository,
+            IJogosPromocoesRepository jogosPromocoesRepository,
             ILogger<JogosPromocoesController> logger)
         {
             _jogoRepository = jogoRepository;
             _promocaoRepository = promocaoRepository;
-            _jogosPromcoesRepository = repository;
+            _jogosPromocoesRepository = jogosPromocoesRepository;
             _logger = logger;
         }
 
@@ -33,10 +34,10 @@ namespace FIAPCloudGamesApi.Controllers
         /// Cria uma promoção para um jogo
         /// </summary>
         [HttpPost("Cadastrar")]
-        [Authorize]
+        [Authorize("Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
-        public IActionResult Post([FromBody] JogosPromocoesInput input)
+        public IActionResult Cadastrar([FromBody] JogosPromocoesInput input)
         {
             try
             {
@@ -61,6 +62,14 @@ namespace FIAPCloudGamesApi.Controllers
                     return NotFound(ApiResponse<string>.Falha(StatusCodes.Status404NotFound, "Promoção não encontrada."));
                 }
 
+                var existePromocaoAtiva = _jogosPromocoesRepository.ExistePromocaoAtivaParaOJogo(input.JogoId);
+                if (existePromocaoAtiva)
+                {
+                    _logger.LogWarning("Já existe uma promoção ativa para o jogo. JogoId: {JogoId}", input.JogoId);
+                    return Conflict(ApiResponse<string>
+                        .Falha(StatusCodes.Status409Conflict, "Já existe uma promoção ativa para este jogo."));
+                }
+
                 var entidade = new JogosPromocoes
                 {
                     JogoId = input.JogoId,
@@ -69,7 +78,7 @@ namespace FIAPCloudGamesApi.Controllers
                     UsuarioId = usuario.Id,
                 };
 
-                _jogosPromcoesRepository.Cadastrar(entidade);
+                _jogosPromocoesRepository.Cadastrar(entidade);
 
                 _logger.LogInformation("Promoção adicionada ao jogo. JogoId: {JogoId}, PromocaoId: {PromocaoId}", input.JogoId, input.PromocaoId);
 
@@ -91,7 +100,7 @@ namespace FIAPCloudGamesApi.Controllers
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status404NotFound)]
         public IActionResult Obter(int id)
         {
-            var entidade = _jogosPromcoesRepository.ObterPorId(id);
+            var entidade = _jogosPromocoesRepository.ObterPorId(id);
             if (entidade == null)
             {
                 _logger.LogWarning("Promoção do jogo não encontrada. Id: {Id}", id);
@@ -109,7 +118,7 @@ namespace FIAPCloudGamesApi.Controllers
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<JogosPromocoes>>), StatusCodes.Status200OK)]
         public IActionResult ObterTodos()
         {
-            var entidades = _jogosPromcoesRepository.ObterTodos();
+            var entidades = _jogosPromocoesRepository.ObterTodos();
 
             _logger.LogInformation("Listagem de promoções dos jogos realizada. Total: {Total}", entidades.Count());
             return Ok(ApiResponse<IEnumerable<JogosPromocoes>>.Ok(entidades));
@@ -119,22 +128,22 @@ namespace FIAPCloudGamesApi.Controllers
         /// Deletar uma promoção de jogo
         /// </summary>
         [HttpDelete("Deletar/{id}")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize("Admin")]
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status404NotFound)]
         public IActionResult Deletar(int id)
         {
-            var entidade = _jogosPromcoesRepository.ObterPorId(id);
+            var entidade = _jogosPromocoesRepository.ObterPorId(id);
             if (entidade == null)
             {
                 _logger.LogWarning("Promoção do jogo não encontrada para deletar. Id: {Id}", id);
                 return NotFound(ApiResponse<string>.Falha(StatusCodes.Status404NotFound, "Promoção do jogo não encontrada."));
             }
 
-            _jogosPromcoesRepository.Deletar(id);
+            _jogosPromocoesRepository.Deletar(id);
 
             _logger.LogInformation("Promoção do jogo deletada. Id: {Id}", id);
-            return NoContent();
+            return Ok(ApiResponse<string>.Ok("Promoção excluída com sucesso."));
         }
     }
 }
