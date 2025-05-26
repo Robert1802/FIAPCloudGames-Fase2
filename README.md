@@ -2,8 +2,8 @@
 
 ## Grupo - 48
 
-- Roberto Lima de Moura - RM364393 - roblm_@hotmail.com
 - Ricardo Zitelli de Oliveira - RM 360730 - ricardo_zitelli@hotmail.com
+- Roberto Lima de Moura - RM364393 - roblm_@hotmail.com
 - Victor Prado Chaves - RM362764 - vicpradochaves@gmail.com
 
 ## Requisitos Funcionais
