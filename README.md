@@ -20,6 +20,7 @@
 - API seguindo o padrão Controllers MVC.
 - Implementar Middleware para tratamento de erros e logs estruturados.
 - Documentação com Swagger para expor os endpoints da API.
+- Tratamento de erros e sistema de logs no banco de dados
 - Testes unitários com xUnit
 
 ## DDD - Event Storming
