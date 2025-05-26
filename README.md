@@ -28,9 +28,10 @@
 
 ## Setup do Banco de Dados e Migrações
 
-- No Package Manager Console escolha o "Default Project" como "Infrastructure"
-- Depois digite: Update-Database -StartupProject Infrastructure
+- Crie um banco de dados chamado "fiapcloudgames" no seu banco de dados local
+- Quando o projeto for executado, ele fará as migrações automaticamente para o banco de dados
+- Nesta migração inicial também será criado um usuário administrador
 
 ## String de Conexão
 
-- Alterar a string de conexão para o seu servidor local
+- Alterar a string de conexão no arquivo "appsettings.json" para o seu servidor local

@@ -64,7 +64,7 @@ public class JogoCreateTest
         jogo.Empresa.Should().Be("Zitelli Games");
         jogo.Preco.Should().Be(199.90m);
         jogo.Descricao.Should().Be("Jogo de código");
-        jogo.UsuarioId.Should().Be(123);
+        jogo.UsuarioId.Should().Be(1);
 
         _jogoRepositoryMock.Verify(r => r.Cadastrar(It.IsAny<Jogo>()), Times.Once);
     }

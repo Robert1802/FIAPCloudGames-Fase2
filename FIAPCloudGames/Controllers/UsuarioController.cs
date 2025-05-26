@@ -1,4 +1,5 @@
-﻿using Core.Entity;
+﻿using Azure;
+using Core.Entity;
 using Core.Input;
 using Core.Repository;
 using Core.Responses;
@@ -25,11 +26,23 @@ namespace FIAPCloudGamesApi.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [ProducesResponseType(typeof(ApiResponse<UsuarioResponse>), StatusCodes.Status200OK)]
         public IActionResult Get([FromRoute] int id)
         {
             try
             {
-                return Ok(_usuarioRepository.ObterPorId(id));
+                Usuario usuario = _usuarioRepository.ObterPorId(id);
+                UsuarioResponse response = new
+                (
+                    usuario.Id,
+                    usuario.Nome,
+                    usuario.Email,
+                    usuario.Senha,
+                    usuario.NivelAcesso,
+                    usuario.Saldo
+                );
+
+                return Ok(ApiResponse<UsuarioResponse>.Ok(response));
             }
             catch (Exception e)
             {
@@ -54,7 +67,7 @@ namespace FIAPCloudGamesApi.Controllers
                 };
 
                 if (_usuarioRepository.ObterPorEmail(input.Email) != null)
-                    return BadRequest($"Ja existe um usuário utilizando o E-mail \"{input.Email}\" em nossa base de dados");
+                    return BadRequest($"Já existe um usuário utilizando o E-mail \"{input.Email}\" em nossa base de dados");
                 
                 _usuarioRepository.Cadastrar(usuario);
                 _logger.LogInformation($"Usuario \"{usuario.Nome}\" com email \"{usuario.Email}\" cadastrado com sucesso!");
@@ -72,6 +85,7 @@ namespace FIAPCloudGamesApi.Controllers
 
         [HttpPut]
         [Authorize]
+        [ProducesResponseType(typeof(ApiResponse<UsuarioResponse>), StatusCodes.Status200OK)]
         public IActionResult Put([FromBody] UsuarioUpdateInput input)
         {
             try
@@ -85,8 +99,18 @@ namespace FIAPCloudGamesApi.Controllers
 
                 _usuarioRepository.Alterar(usuario);
 
+                UsuarioResponse response = new
+                (
+                    usuario.Id,
+                    usuario.Nome,
+                    usuario.Email,
+                    usuario.Senha,
+                    usuario.NivelAcesso,
+                    usuario.Saldo
+                );
+
                 _logger.LogInformation($"Usuario \"{input.Nome}\" alterado com sucesso!");
-                return Ok(ApiResponse<Usuario>.Ok(usuario));
+                return Ok(ApiResponse<UsuarioResponse>.Ok(response));
             }
             catch (Exception e)
             {

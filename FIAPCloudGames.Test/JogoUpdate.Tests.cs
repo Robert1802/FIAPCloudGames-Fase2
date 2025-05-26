@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using System.Security.Claims;
 
+namespace FIAPCloudGames.Test;
 public class JogoUpdateTest
 {
     [Fact]
@@ -48,7 +49,7 @@ public class JogoUpdateTest
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var mensagem = Assert.IsType<string>(okResult.Value);
+        var response = Assert.IsType<ApiResponse<string>>(okResult.Value);
 
         mockRepo.Verify(r => r.Alterar(It.Is<Jogo>(
             j => j.Id == 1 &&
