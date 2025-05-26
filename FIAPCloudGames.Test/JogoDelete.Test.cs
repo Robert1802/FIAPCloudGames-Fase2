@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using System.Security.Claims;
 
+namespace FIAPCloudGames.Test;
 public class JogoDelete
 {
     [Fact]

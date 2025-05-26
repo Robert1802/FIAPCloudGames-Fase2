@@ -116,7 +116,6 @@ namespace FIAPCloudGamesApi.Controllers
                 throw new Exception("O nome do jogo informado já existe em nossos servidores");
         }
 
-        // Fazer check para ver se Usuario é Administrador
         [HttpPut]
         [Authorize(Roles = "Admin")]
         public IActionResult Put([FromBody] JogoUpdateInput input)
@@ -134,8 +133,7 @@ namespace FIAPCloudGamesApi.Controllers
 
                 string mensagem = $"Jogo \"{jogo.Nome}\" atualizado com sucesso!";
                 _logger.LogInformation(mensagem);
-                return Ok(mensagem);
-
+                return Ok(ApiResponse<string>.Ok(mensagem));
             }
             catch (Exception e)
             {
