@@ -24,6 +24,10 @@ namespace Core.Entity
         [ForeignKey("Usuario")]
         public int UsuarioId { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Desconto { get; set; }
+
         [JsonIgnore]
         public virtual Usuario Usuario { get; set; }
         

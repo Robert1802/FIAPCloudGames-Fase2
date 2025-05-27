@@ -1,4 +1,5 @@
-﻿using Core.Entity;
+﻿using Azure;
+using Core.Entity;
 using Core.Repository;
 using Core.Responses;
 using FIAPCloudGamesApi.Controllers;
@@ -44,9 +45,8 @@ namespace FIAPCloudGames.Test
             // Assert
             Assert.NotNull(resultado);
             Assert.Equal(200, resultado!.StatusCode);
-            var jogoRetornado = Assert.IsType<Jogo>(resultado.Value);
-            Assert.Equal(id, jogoRetornado.Id);
-            Assert.Equal("Minecraft", jogoRetornado.Nome);
+            var jogoRetornado = Assert.IsType<ApiResponse<JogoResponse>>(resultado.Value);
+            Assert.Equal("Minecraft", jogoRetornado.Dados.Nome);
         }
 
         [Fact]

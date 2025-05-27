@@ -34,7 +34,7 @@ namespace FIAPCloudGamesApi.Controllers
         /// Cria uma promoção para um jogo
         /// </summary>
         [HttpPost("Cadastrar")]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
         public IActionResult Cadastrar([FromBody] JogosPromocoesInput input)
@@ -128,7 +128,7 @@ namespace FIAPCloudGamesApi.Controllers
         /// Deletar uma promoção de jogo
         /// </summary>
         [HttpDelete("Deletar/{id}")]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status404NotFound)]
         public IActionResult Deletar(int id)

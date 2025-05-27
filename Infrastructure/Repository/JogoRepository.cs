@@ -1,8 +1,5 @@
 ﻿using Core.Entity;
-using Core.Input;
 using Core.Repository;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Repository
 {
