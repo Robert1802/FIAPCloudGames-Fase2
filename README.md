@@ -25,7 +25,7 @@
 
 ## DDD - Event Storming
 
-[Diagrama de Envent Storm de cadastro de Usuário e Cadastro de Jogos no Miro](https://miro.com/welcomeonboard/YlVLSnhYWFFCWFh5bm5MZWYrQTRhbHEwZkM5K2lpZHNuKzUzSmtSN2JlamFDa1daNUdzVTF5ZCtKRHlhSUtSTlkzbHZNbE1ZSmNkQzc5NHJGZGx6Nk14MWsvOWh1U3c5RDhLYmVpRk5VN2t3akRxejNlQkk2eUZlajRNYU9RRE5yVmtkMG5hNDA3dVlncnBvRVB2ZXBnPT0hdjE=?share_link_id=337316909728)
+[Diagrama de Event Storming de cadastro de Usuário e Cadastro de Jogos no Miro](https://miro.com/welcomeonboard/YlVLSnhYWFFCWFh5bm5MZWYrQTRhbHEwZkM5K2lpZHNuKzUzSmtSN2JlamFDa1daNUdzVTF5ZCtKRHlhSUtSTlkzbHZNbE1ZSmNkQzc5NHJGZGx6Nk14MWsvOWh1U3c5RDhLYmVpRk5VN2t3akRxejNlQkk2eUZlajRNYU9RRE5yVmtkMG5hNDA3dVlncnBvRVB2ZXBnPT0hdjE=?share_link_id=337316909728)
 
 ## Setup do Banco de Dados e Migrações
 
