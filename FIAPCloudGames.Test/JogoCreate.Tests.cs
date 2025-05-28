@@ -93,7 +93,7 @@ public class JogoCreateTest
         badRequest.Should().NotBeNull();
         badRequest!.StatusCode.Should().Be(400);
 
-        badRequest.Value.Should().Be($"O jogo \"{input.Nome}\" já existe em nossos servidores.");
+        badRequest.Value.Should().Be($"O jogo {input.Nome} já existe em nossos servidores.");
 
         _jogoRepositoryMock.Verify(r => r.Cadastrar(It.IsAny<Jogo>()), Times.Once);
     }

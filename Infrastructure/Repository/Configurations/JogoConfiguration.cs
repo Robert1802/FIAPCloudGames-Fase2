@@ -1,4 +1,5 @@
 ﻿using Core.Entity;
+using Core.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,7 +16,7 @@ namespace Infrastructure.Repository.Configurations
             builder.Property(p => p.Nome).HasColumnType("VARCHAR(200)").IsRequired();
             builder.Property(p => p.Descricao).HasColumnType("VARCHAR(400)").IsRequired();
             builder.Property(p => p.Preco).HasColumnType("DECIMAL(10,2)").IsRequired();            
-            builder.Property(p => p.Empresa).HasColumnType("VARCHAR(100)").IsRequired(false);
+            builder.Property(p => p.Empresa).HasColumnType("VARCHAR(100)").IsRequired();
             builder.Property(p => p.DataCriacao).HasColumnType("DATETIME").IsRequired();
 
             builder.HasOne(p => p.Usuario)

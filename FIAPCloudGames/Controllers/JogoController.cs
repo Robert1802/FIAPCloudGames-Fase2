@@ -62,7 +62,16 @@ namespace FIAPCloudGamesApi.Controllers
         {
             try
             {
-                return Ok(_jogoRepository.ObterPorId(id));
+                Jogo jogo = _jogoRepository.ObterPorId(id);
+                JogoResponse response = new
+                (
+                    jogo.Nome,
+                    jogo.Descricao,
+                    jogo.Preco,
+                    jogo.Empresa
+                );
+
+                return Ok(ApiResponse<JogoResponse>.Ok(response));
             }
             catch (Exception e)
             {
@@ -77,13 +86,14 @@ namespace FIAPCloudGamesApi.Controllers
         public IActionResult Post([FromBody] JogoInput input)
         {
             try
-            {  
+            {
                 var jogo = new Jogo()
                 {
                     Nome = input.Nome?.Trim() ?? string.Empty,
                     Empresa = input.Empresa,
                     Descricao = input.Descricao?.Trim() ?? string.Empty,
-                    Preco = input.Preco,                    
+                    Preco = input.Preco,
+                    DataCriacao = DateTime.Now,                    
                     UsuarioId = UsuarioLogadoHelper.ObterUsuarioLogado(User)!.Id
                 };
 
@@ -91,18 +101,18 @@ namespace FIAPCloudGamesApi.Controllers
 
                 _jogoRepository.Cadastrar(jogo);
 
-                _logger.LogInformation($"Jogo \"{jogo.Nome}\" cadastrado com sucesso!");
+                _logger.LogInformation($"Jogo {jogo.Nome} cadastrado com sucesso!");
                 return Ok(jogo);
             }
             catch (Exception e) when ((e.Message ?? string.Empty).Contains("já existe em nossos servidores"))
             {
-                string mensagem = $"O jogo \"{input.Nome}\" já existe em nossos servidores.";
+                string mensagem = $"O jogo {input.Nome} já existe em nossos servidores.";
                 _logger.LogError(mensagem + " Detalhes: " + e.Message);
                 return BadRequest(mensagem);
             }
             catch (Exception e)
             {
-                string mensagem = $"Um erro ocorreu ao tentar cadastrar o jogo: \"{input.Nome}\".";
+                string mensagem = $"Um erro ocorreu ao tentar cadastrar o jogo: {input.Nome}.";
                 _logger.LogError(mensagem + " Detalhes: " + e.Message);
                 return BadRequest(ApiResponse<string>.Falha(StatusCodes.Status400BadRequest, mensagem));
             }
@@ -131,13 +141,13 @@ namespace FIAPCloudGamesApi.Controllers
 
                 _jogoRepository.Alterar(jogo);
 
-                string mensagem = $"Jogo \"{jogo.Nome}\" atualizado com sucesso!";
+                string mensagem = $"Jogo {jogo.Nome} atualizado com sucesso!";
                 _logger.LogInformation(mensagem);
                 return Ok(ApiResponse<string>.Ok(mensagem));
             }
             catch (Exception e)
             {
-                string mensagem = $"Um erro ocorreu ao tentar atualizar o jogo: \"{input.Nome}\".";
+                string mensagem = $"Um erro ocorreu ao tentar atualizar o jogo: {input.Nome}.";
                 _logger.LogError(mensagem + " Detalhes: " + e.Message);
                 return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
@@ -150,14 +160,14 @@ namespace FIAPCloudGamesApi.Controllers
             try
             {
                 _jogoRepository.Deletar(id);
-                string mensagem = $"Jogo de Id \"{id}\" deletado com sucesso!";
+                string mensagem = $"Jogo de Id {id} deletado com sucesso!";
                 _logger.LogInformation(mensagem);
                 return Ok(ApiResponse<string>.Ok(mensagem));
 
             }
             catch (Exception e)
             {
-                string mensagem = $"Um erro ocorreu ao tentar deletar o jogo de Id: \"{id}\".";
+                string mensagem = $"Um erro ocorreu ao tentar deletar o jogo de Id: {id}.";
                 _logger.LogError(mensagem + " Detalhes: " + e.Message);
                 return BadRequest(ApiResponse<string>.Falha(500, mensagem));
             }
