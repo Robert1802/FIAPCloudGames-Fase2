@@ -93,8 +93,7 @@ namespace FIAPCloudGamesApi.Controllers
                     Empresa = input.Empresa,
                     Descricao = input.Descricao?.Trim() ?? string.Empty,
                     Preco = input.Preco,
-                    DataCriacao = DateTime.Now,
-                    Desconto = 0,
+                    DataCriacao = DateTime.Now,                    
                     UsuarioId = UsuarioLogadoHelper.ObterUsuarioLogado(User)!.Id
                 };
 
