@@ -39,9 +39,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("DATETIME");
 
-                    b.Property<decimal>("Desconto")
-                        .HasColumnType("DECIMAL(3,2)");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(400)

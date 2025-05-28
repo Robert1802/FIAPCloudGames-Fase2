@@ -55,8 +55,7 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "VARCHAR(200)", maxLength: 200, nullable: false),
                     Descricao = table.Column<string>(type: "VARCHAR(400)", maxLength: 400, nullable: false),
-                    Preco = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
-                    Desconto = table.Column<decimal>(type: "DECIMAL(3,2)", nullable: false),
+                    Preco = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),                    
                     Empresa = table.Column<string>(type: "VARCHAR(100)", nullable: true),
                     UsuarioId = table.Column<int>(type: "INT", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "DATETIME", nullable: false)
