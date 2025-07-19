@@ -1,4 +1,4 @@
-using Core.Repository;
+using FIAPCloudGames.Core.Repository;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using FIAPCloudGamesApi.Configurations;
@@ -10,9 +10,9 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
-using Core.Utils;
-using Core.Entity;
-using Core.Validators;
+using FIAPCloudGames.Core.Utils;
+using FIAPCloudGames.Core.Entity;
+using FIAPCloudGames.Core.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 

@@ -1,7 +1,7 @@
-﻿using Core.Input;
+﻿using FIAPCloudGames.Core.Input;
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Input
+namespace FIAPCloudGames.Core.Input
 {
     public class UsuarioInput
     {

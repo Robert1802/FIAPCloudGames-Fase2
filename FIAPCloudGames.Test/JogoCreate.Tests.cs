@@ -3,12 +3,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using FIAPCloudGamesApi.Controllers;
-using Core.Repository;
+using FIAPCloudGames.Core.Repository;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Core.Input;
-using Core.Entity;
-using Core.Responses;
+using FIAPCloudGames.Core.Input;
+using FIAPCloudGames.Core.Entity;
+using FIAPCloudGames.Core.Responses;
 
 namespace FIAPCloudGames.Test;
 public class JogoCreateTest

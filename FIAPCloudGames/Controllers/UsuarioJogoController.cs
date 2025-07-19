@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Core.Entity;
-using Core.Input;
-using Core.Repository;
-using Core.Responses;
+using FIAPCloudGames.Core.Entity;
+using FIAPCloudGames.Core.Input;
+using FIAPCloudGames.Core.Repository;
+using FIAPCloudGames.Core.Responses;
 using Microsoft.AspNetCore.Authorization;
-using FIAPCloudGamesApi.Helpers;
+using FIAPCloudGames.Api.Helpers;
 
 namespace FIAPCloudGamesApi.Controllers
 {

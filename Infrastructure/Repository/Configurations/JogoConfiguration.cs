@@ -1,5 +1,5 @@
-﻿using Core.Entity;
-using Core.Responses;
+﻿using FIAPCloudGames.Core.Entity;
+using FIAPCloudGames.Core.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

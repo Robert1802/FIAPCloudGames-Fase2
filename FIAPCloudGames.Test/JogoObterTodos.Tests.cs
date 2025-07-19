@@ -1,11 +1,12 @@
-﻿using Core.Entity;
-using Core.Repository;
+﻿using FIAPCloudGames.Core.Entity;
+using FIAPCloudGames.Core.Repository;
 using FIAPCloudGamesApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Core.Input;
-using Core.Responses;
+using FIAPCloudGames.Core.Input;
+using FIAPCloudGames.Core.Responses;
+using FIAPCloudGames.Application.DTO;
 
 namespace FIAPCloudGames.Test
 {

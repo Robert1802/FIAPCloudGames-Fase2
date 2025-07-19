@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Responses
+namespace FIAPCloudGames.Core.Responses
 {
     public record UsuarioResponse
     (

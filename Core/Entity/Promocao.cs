@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Core.Entity
+namespace FIAPCloudGames.Core.Entity
 {
     public class Promocao : EntityBase
     {

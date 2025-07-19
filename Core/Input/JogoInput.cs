@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Input
+namespace FIAPCloudGames.Core.Input
 {
     public class JogoInput
     {

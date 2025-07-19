@@ -1,5 +1,5 @@
-﻿using Core.Entity;
-using Core.Repository;
+﻿using FIAPCloudGames.Core.Entity;
+using FIAPCloudGames.Core.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository

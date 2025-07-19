@@ -1,4 +1,4 @@
-﻿using Core.Entity;
+﻿using FIAPCloudGames.Core.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

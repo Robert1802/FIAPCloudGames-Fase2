@@ -1,11 +1,11 @@
-﻿using Core.Entity;
+﻿using FIAPCloudGames.Core.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Repository
+namespace FIAPCloudGames.Core.Repository
 {
     public interface IRepository<T> where T : EntityBase
     {

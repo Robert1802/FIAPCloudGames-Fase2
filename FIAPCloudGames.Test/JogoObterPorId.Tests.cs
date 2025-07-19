@@ -1,7 +1,7 @@
 ﻿using Azure;
-using Core.Entity;
-using Core.Repository;
-using Core.Responses;
+using FIAPCloudGames.Core.Entity;
+using FIAPCloudGames.Core.Repository;
+using FIAPCloudGames.Core.Responses;
 using FIAPCloudGamesApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

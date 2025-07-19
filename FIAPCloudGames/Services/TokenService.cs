@@ -1,4 +1,4 @@
-﻿using Core.Entity;
+﻿using FIAPCloudGames.Core.Entity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

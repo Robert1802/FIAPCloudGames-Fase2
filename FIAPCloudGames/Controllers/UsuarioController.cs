@@ -1,10 +1,10 @@
 ﻿using Azure;
-using Core.Entity;
-using Core.Input;
-using Core.Repository;
-using Core.Responses;
-using Core.Utils;
-using FIAPCloudGamesApi.Helpers;
+using FIAPCloudGames.Core.Entity;
+using FIAPCloudGames.Core.Input;
+using FIAPCloudGames.Core.Repository;
+using FIAPCloudGames.Core.Responses;
+using FIAPCloudGames.Core.Utils;
+using FIAPCloudGames.Api.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

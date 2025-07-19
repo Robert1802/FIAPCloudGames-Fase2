@@ -1,7 +1,7 @@
-﻿using Core.Input;
+﻿using FIAPCloudGames.Core.Input;
 using FluentValidation;
 
-namespace Core.Validators
+namespace FIAPCloudGames.Core.Validators
 {
     public class JogosPromocoesInputValidator : AbstractValidator<JogosPromocoesInput>
     {

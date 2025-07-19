@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
-using Core.Entity;
+using FIAPCloudGames.Core.Entity;
 
-namespace FIAPCloudGamesApi.Helpers;
+namespace FIAPCloudGames.Api.Helpers;
 
 public static class UsuarioLogadoHelper
 {

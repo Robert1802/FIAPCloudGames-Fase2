@@ -1,5 +1,5 @@
-﻿using Core.Repository;
-using Core.Responses;
+﻿using FIAPCloudGames.Core.Repository;
+using FIAPCloudGames.Core.Responses;
 using FIAPCloudGamesApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

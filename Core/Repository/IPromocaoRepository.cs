@@ -1,6 +1,6 @@
-﻿using Core.Entity;
+﻿using FIAPCloudGames.Core.Entity;
 
-namespace Core.Repository
+namespace FIAPCloudGames.Core.Repository
 {
     public interface IPromocaoRepository : IRepository<Promocao>
     {

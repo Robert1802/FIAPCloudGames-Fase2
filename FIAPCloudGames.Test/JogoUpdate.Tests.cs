@@ -1,7 +1,7 @@
-﻿using Core.Entity;
-using Core.Input;
-using Core.Repository;
-using Core.Responses;
+﻿using FIAPCloudGames.Core.Entity;
+using FIAPCloudGames.Core.Input;
+using FIAPCloudGames.Core.Repository;
+using FIAPCloudGames.Core.Responses;
 using FIAPCloudGamesApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

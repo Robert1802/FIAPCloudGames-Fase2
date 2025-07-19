@@ -1,4 +1,4 @@
-﻿namespace Core.Input
+﻿namespace FIAPCloudGames.Core.Input
 {
     public class UsuarioUpdateInput
     {

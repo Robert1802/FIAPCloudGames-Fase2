@@ -1,6 +1,6 @@
-﻿using Core.Entity;
+﻿using FIAPCloudGames.Application.DTO;
 
-namespace Core.Input
+namespace FIAPCloudGames.Application.DTO
 {
     public class UsuarioJogoDto
     {

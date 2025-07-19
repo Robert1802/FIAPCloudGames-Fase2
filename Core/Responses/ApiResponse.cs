@@ -1,4 +1,4 @@
-﻿namespace Core.Responses;
+﻿namespace FIAPCloudGames.Core.Responses;
 
 public class ApiResponse<T>
 {

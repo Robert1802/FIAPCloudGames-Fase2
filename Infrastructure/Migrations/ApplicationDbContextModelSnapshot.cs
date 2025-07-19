@@ -15,6 +15,7 @@ namespace Infrastructure.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
+#pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Proxies:ChangeTracking", false)
@@ -40,7 +41,8 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(400)
                         .HasColumnType("VARCHAR(400)");
 
-                    b.Property<string>("Empresa")                        
+                    b.Property<string>("Empresa")
+                        .IsRequired()
                         .HasColumnType("VARCHAR(100)");
 
                     b.Property<string>("Nome")
@@ -333,6 +335,7 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("UsuarioJogos");
                 });
+#pragma warning restore 612, 618
         }
     }
 }

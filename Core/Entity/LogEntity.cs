@@ -1,4 +1,4 @@
-﻿namespace Core.Entity
+﻿namespace FIAPCloudGames.Core.Entity
 {
     public class LogEntity
     {
