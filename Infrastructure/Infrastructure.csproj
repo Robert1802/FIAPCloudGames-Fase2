@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\FIAPCloudGames.Core.csproj" />
+    <ProjectReference Include="..\FIAPCloudGames.Application\FIAPCloudGames.Application.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,4 @@
 ﻿using FIAPCloudGames.Core.Entity;
-using FIAPCloudGames.Core.Input;
-using FIAPCloudGames.Core.Repository;
-using FIAPCloudGames.Core.Utils;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
