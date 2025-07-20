@@ -1,8 +1,8 @@
-﻿using FIAPCloudGames.Core.Entity;
-using FIAPCloudGames.Core.Input;
-using FIAPCloudGames.Core.Repository;
-using FIAPCloudGames.Core.Responses;
-using FIAPCloudGamesApi.Controllers;
+﻿using FIAPCloudGames.Domain.Entity;
+using FIAPCloudGames.Domain.Input;
+using FIAPCloudGames.Domain.Repository;
+using FIAPCloudGames.Domain.Responses;
+using FIAPCloudGames.WebApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
