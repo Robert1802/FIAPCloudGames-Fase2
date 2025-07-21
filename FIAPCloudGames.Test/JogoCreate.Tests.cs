@@ -2,13 +2,13 @@ using Moq;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using FIAPCloudGamesApi.Controllers;
-using Core.Repository;
+using FIAPCloudGames.WebApi.Controllers;
+using FIAPCloudGames.Domain.Repository;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Core.Input;
-using Core.Entity;
-using Core.Responses;
+using FIAPCloudGames.Domain.Input;
+using FIAPCloudGames.Domain.Entity;
+using FIAPCloudGames.Domain.Responses;
 
 namespace FIAPCloudGames.Test;
 public class JogoCreateTest
@@ -44,7 +44,7 @@ public class JogoCreateTest
         {
             Nome = "God of Code",
             Empresa = "Zitelli Games",
-            Descricao = "Jogo de código",
+            Descricao = "Jogo de cï¿½digo",
             Preco = 199.90m
         };
 
@@ -63,7 +63,7 @@ public class JogoCreateTest
         jogo!.Nome.Should().Be("God of Code");
         jogo.Empresa.Should().Be("Zitelli Games");
         jogo.Preco.Should().Be(199.90m);
-        jogo.Descricao.Should().Be("Jogo de código");
+        jogo.Descricao.Should().Be("Jogo de cï¿½digo");
         jogo.UsuarioId.Should().Be(1);
 
         _jogoRepositoryMock.Verify(r => r.Cadastrar(It.IsAny<Jogo>()), Times.Once);
@@ -77,13 +77,13 @@ public class JogoCreateTest
         {
             Nome = "God of Code",
             Empresa = "Zitelli Games",
-            Descricao = "Jogo de código",
+            Descricao = "Jogo de cï¿½digo",
             Preco = 199.90m
         };
 
         _jogoRepositoryMock
             .Setup(r => r.Cadastrar(It.IsAny<Jogo>()))
-            .Throws(new Exception("O jogo já existe em nossos servidores"));
+            .Throws(new Exception("O jogo jï¿½ existe em nossos servidores"));
 
         // Act
         var resultado = _controller.Post(input);
@@ -93,7 +93,7 @@ public class JogoCreateTest
         badRequest.Should().NotBeNull();
         badRequest!.StatusCode.Should().Be(400);
 
-        badRequest.Value.Should().Be($"O jogo {input.Nome} já existe em nossos servidores.");
+        badRequest.Value.Should().Be($"O jogo {input.Nome} jï¿½ existe em nossos servidores.");
 
         _jogoRepositoryMock.Verify(r => r.Cadastrar(It.IsAny<Jogo>()), Times.Once);
     }
@@ -106,7 +106,7 @@ public class JogoCreateTest
         {
             Nome = "GameCrash",
             Empresa = "EmpresaCrash",
-            Descricao = "Descrição",
+            Descricao = "Descriï¿½ï¿½o",
             Preco = 100
         };
 

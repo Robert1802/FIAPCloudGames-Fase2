@@ -19,9 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\FIAPCloudGames\FIAPCloudGamesApi.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\FIAPCloudGames.Domain\FIAPCloudGames.Domain.csproj" />
+    <ProjectReference Include="..\FIAPCloudGames.WebApi\FIAPCloudGames.WebApi.csproj" />
+    <ProjectReference Include="..\FIAPCloudGames.Infrastructure\FIAPCloudGames.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
