@@ -50,14 +50,7 @@ public class JogoUpdateTest
             UsuarioId = 999
         };
 
-        var input = new JogoUpdateRequest
-        {
-            Id = 1,
-            Nome = "  Novo Nome  ",
-            Empresa = "Nova Empresa",
-            Descricao = "  Nova descrição  ",
-            Preco = 150
-        };
+        var input = new JogoUpdateRequest(Id: 1, Descricao: "Nova descrição", Empresa: "Nova Empresa", Nome: "Novo Nome", Preco: 150);
 
         _mockRepo.Setup(r => r.ObterPorId(1)).Returns(jogoOriginal);
         _mockRepo.Setup(r => r.Alterar(It.IsAny<Jogo>()));
@@ -86,14 +79,7 @@ public class JogoUpdateTest
     public void Put_ThrowsException_ReturnsBadRequest()
     {
         // Arrange
-        var input = new JogoUpdateRequest
-        {
-            Id = 1,
-            Nome = "Erro",
-            Empresa = "X",
-            Descricao = "Teste",
-            Preco = 10
-        };
+        var input = new JogoUpdateRequest(Id:1, Descricao: "Teste", Empresa: "X", Nome: "Erro", Preco: 10);
 
         _mockRepo.Setup(r => r.ObterPorId(It.IsAny<int>()))
                  .Throws(new Exception("Erro de banco"));

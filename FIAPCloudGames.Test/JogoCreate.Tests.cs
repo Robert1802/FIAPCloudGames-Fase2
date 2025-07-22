@@ -6,7 +6,6 @@ using FIAPCloudGames.WebApi.Controllers;
 using FIAPCloudGames.Domain.Repository;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using FIAPCloudGames.Domain.Input;
 using FIAPCloudGames.Domain.Entity;
 using FIAPCloudGames.Domain.Responses;
 using FIAPCloudGames.Application.DTO.Request;
@@ -41,7 +40,7 @@ public class JogoCreateTest
     public void Post_DeveCadastrarJogo_QuandoDadosSaoValidos()
     {
         // Arrange
-        var input = new JogoRequest
+        var input = new JogoRequest("God of Code", "Zitelli Games", "Jogo de código", 199.90m)
         {
             Nome = "God of Code",
             Empresa = "Zitelli Games",
@@ -74,13 +73,7 @@ public class JogoCreateTest
     public void Post_DeveRetornarBadRequest_QuandoJogoJaExiste()
     {
         // Arrange
-        var input = new JogoRequest
-        {
-            Nome = "God of Code",
-            Empresa = "Zitelli Games",
-            Descricao = "Jogo de c�digo",
-            Preco = 199.90m
-        };
+        var input = new JogoRequest(Descricao: "Jogo de c�digo", Empresa: "Zitelli Games", Nome: "God of Code", Preco: 199.90m);
 
         _jogoRepositoryMock
             .Setup(r => r.Cadastrar(It.IsAny<Jogo>()))
@@ -103,13 +96,8 @@ public class JogoCreateTest
     public void Post_DeveRetornarErro400_SeOcorrerErroInesperado()
     {
         // Arrange
-        var input = new JogoRequest
-        {
-            Nome = "GameCrash",
-            Empresa = "EmpresaCrash",
-            Descricao = "Descri��o",
-            Preco = 100
-        };
+        var input = new JogoRequest(Nome: "GameCrash", Empresa: "EmpresaCrash", Descricao: "Descrição", Preco: 100);
+        
 
         _jogoRepositoryMock
             .Setup(r => r.Cadastrar(It.IsAny<Jogo>()))

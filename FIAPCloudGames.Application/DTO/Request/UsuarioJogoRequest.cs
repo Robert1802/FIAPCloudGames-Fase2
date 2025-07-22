@@ -2,7 +2,7 @@
 
 namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class UsuarioJogoRequest
+    public record class UsuarioJogoRequest
     {
         [Required]
         public int UsuarioId { get; set; }

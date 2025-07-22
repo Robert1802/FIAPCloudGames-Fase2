@@ -4,9 +4,7 @@ using FIAPCloudGames.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using FIAPCloudGames.Domain.Input;
 using FIAPCloudGames.Domain.Responses;
-using FIAPCloudGames.Application.DTO;
 
 namespace FIAPCloudGames.Test
 {

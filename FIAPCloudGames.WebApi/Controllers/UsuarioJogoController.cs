@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FIAPCloudGames.Domain.Entity;
-using FIAPCloudGames.Domain.Input;
 using FIAPCloudGames.Domain.Repository;
 using FIAPCloudGames.Domain.Responses;
 using Microsoft.AspNetCore.Authorization;
