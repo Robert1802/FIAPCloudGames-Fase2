@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FIAPCloudGames.Domain.Input
+﻿namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class LoginInput
+    public class LoginRequest
     {
         public required string Email { get; set; }
         public required string Senha { get; set; }

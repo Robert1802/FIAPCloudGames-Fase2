@@ -1,6 +1,6 @@
-﻿namespace FIAPCloudGames.Domain.Input
+﻿namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class PromocaoInput
+    public class PromocaoRequest
     {
         public string Nome { get; set; } = null!;
         public DateTime DataInicio { get; set; }

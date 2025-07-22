@@ -1,9 +1,8 @@
-﻿using FIAPCloudGames.Domain.Input;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace FIAPCloudGames.Domain.Input
+namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class UsuarioInput
+    public class UsuarioRequest
     {
         public required string Nome { get; set; }
         [EmailAddress(ErrorMessage = "Este e-mail não é válido")]

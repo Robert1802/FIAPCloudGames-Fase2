@@ -1,11 +1,11 @@
 ﻿using FIAPCloudGames.WebApi.Helpers;
 using FIAPCloudGames.Application.DTO;
 using FIAPCloudGames.Domain.Entity;
-using FIAPCloudGames.Domain.Input;
 using FIAPCloudGames.Domain.Repository;
 using FIAPCloudGames.Domain.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FIAPCloudGames.Application.DTO.Request;
 
 namespace FIAPCloudGames.WebApi.Controllers
 {
@@ -28,7 +28,7 @@ namespace FIAPCloudGames.WebApi.Controllers
         {
             try
             {
-                var jogosDto = new List<JogoDto>();
+                var jogosDto = new List<Jogo>();
                 List<Jogo> jogos = [];
                 if (filtroNome == null)
                     jogos.AddRange(_jogoRepository.ObterTodos());
@@ -37,7 +37,7 @@ namespace FIAPCloudGames.WebApi.Controllers
 
                 foreach (var jogo in jogos)
                 {
-                    jogosDto.Add(new JogoDto()
+                    jogosDto.Add(new Jogo()
                     {
                         Id = jogo.Id,
                         Nome = jogo.Nome,
@@ -84,7 +84,7 @@ namespace FIAPCloudGames.WebApi.Controllers
 
         [HttpPost("Cadastrar")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Post([FromBody] JogoInput input)
+        public IActionResult Post([FromBody] JogoRequest input)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace FIAPCloudGames.WebApi.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public IActionResult Put([FromBody] JogoUpdateInput input)
+        public IActionResult Put([FromBody] JogoUpdateRequest input)
         {
             try
             {

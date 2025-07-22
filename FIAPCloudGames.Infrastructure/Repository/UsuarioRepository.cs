@@ -1,6 +1,6 @@
-﻿using FIAPCloudGames.Domain.Entity;
+﻿using FIAPCloudGames.Application.Utils;
+using FIAPCloudGames.Domain.Entity;
 using FIAPCloudGames.Domain.Repository;
-using FIAPCloudGames.Domain.Utils;
 
 namespace FIAPCloudGames.Infrastructure.Repository;
 

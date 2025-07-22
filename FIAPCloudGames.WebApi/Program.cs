@@ -8,12 +8,12 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
-using FIAPCloudGames.Domain.Utils;
 using FIAPCloudGames.Domain.Entity;
-using FIAPCloudGames.Domain.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FIAPCloudGames.Infrastructure.Repository;
+using FIAPCloudGames.Application.Validators;
+using FIAPCloudGames.Application.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,7 +75,7 @@ builder.Services.AddScoped<IPromocaoRepository, PromocaoRepository>();
 builder.Services.AddScoped<IJogosPromocoesRepository, JogosPromocoesRepository>();
 
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<JogosPromocoesInputValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<JogosPromocoesRequestValidator>();
 
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("Jwt")

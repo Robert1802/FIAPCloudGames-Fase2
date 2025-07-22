@@ -1,6 +1,6 @@
-﻿namespace FIAPCloudGames.Domain.Input
+﻿namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class UsuarioUpdateInput
+    public class UsuarioUpdateRequest
     {
         public int Id { get; set; }
         public required string Nome { get; set; }

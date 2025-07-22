@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using FIAPCloudGames.Domain.Input;
 using FIAPCloudGames.Domain.Entity;
 using FIAPCloudGames.Domain.Responses;
+using FIAPCloudGames.Application.DTO.Request;
 
 namespace FIAPCloudGames.Test;
 public class JogoCreateTest
@@ -40,11 +41,11 @@ public class JogoCreateTest
     public void Post_DeveCadastrarJogo_QuandoDadosSaoValidos()
     {
         // Arrange
-        var input = new JogoInput
+        var input = new JogoRequest
         {
             Nome = "God of Code",
             Empresa = "Zitelli Games",
-            Descricao = "Jogo de c�digo",
+            Descricao = "Jogo de código",
             Preco = 199.90m
         };
 
@@ -73,7 +74,7 @@ public class JogoCreateTest
     public void Post_DeveRetornarBadRequest_QuandoJogoJaExiste()
     {
         // Arrange
-        var input = new JogoInput
+        var input = new JogoRequest
         {
             Nome = "God of Code",
             Empresa = "Zitelli Games",
@@ -102,7 +103,7 @@ public class JogoCreateTest
     public void Post_DeveRetornarErro400_SeOcorrerErroInesperado()
     {
         // Arrange
-        var input = new JogoInput
+        var input = new JogoRequest
         {
             Nome = "GameCrash",
             Empresa = "EmpresaCrash",
