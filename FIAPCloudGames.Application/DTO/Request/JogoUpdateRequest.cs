@@ -1,11 +1,10 @@
 ﻿namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class JogoUpdateRequest
-    {
-        public int Id { get; set; }
-        public string? Nome { get; set; }
-        public string? Empresa { get; set; }
-        public string? Descricao { get; set; }
-        public decimal Preco { get; set; }
-    }
+    public record JogoUpdateRequest(
+        int Id,
+        string? Nome,
+        string? Empresa,
+        string? Descricao,
+        decimal Preco
+    );
 }

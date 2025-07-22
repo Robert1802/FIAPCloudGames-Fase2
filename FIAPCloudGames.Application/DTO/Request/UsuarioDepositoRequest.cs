@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FIAPCloudGames.Domain.Input
+namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class UsuarioDepositoRequest
+    public record class UsuarioDepositoRequest
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         [Range(0.01, 999999999.99, ErrorMessage = "Deposito precisa ser maior do que zero")]
-        public required decimal Deposito { get; set; }
+        public required decimal Deposito { get; init; }
     }
 }

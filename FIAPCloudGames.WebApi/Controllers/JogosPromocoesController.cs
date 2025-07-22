@@ -1,9 +1,7 @@
 ﻿using FIAPCloudGames.WebApi.Helpers;
 using FIAPCloudGames.Domain.Entity;
-using FIAPCloudGames.Domain.Input;
 using FIAPCloudGames.Domain.Repository;
 using FIAPCloudGames.Domain.Responses;
-using FIAPCloudGames.Infrastructure.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FIAPCloudGames.Application.DTO.Request;

@@ -1,7 +1,6 @@
 ﻿using FIAPCloudGames.Application.DTO.Request;
 using FIAPCloudGames.Application.Utils;
 using FIAPCloudGames.Domain.Entity;
-using FIAPCloudGames.Domain.Input;
 using FIAPCloudGames.Domain.Repository;
 using FIAPCloudGames.Domain.Responses;
 using FIAPCloudGames.WebApi.Helpers;

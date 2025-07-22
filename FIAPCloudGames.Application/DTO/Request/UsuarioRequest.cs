@@ -2,7 +2,7 @@
 
 namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class UsuarioRequest
+    public record class UsuarioRequest
     {
         public required string Nome { get; set; }
         [EmailAddress(ErrorMessage = "Este e-mail não é válido")]

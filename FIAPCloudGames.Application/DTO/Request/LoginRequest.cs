@@ -1,8 +1,7 @@
 ﻿namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class LoginRequest
-    {
-        public required string Email { get; set; }
-        public required string Senha { get; set; }
-    }
+    public record LoginRequest(
+        string Email,
+        string Senha
+    );
 }
