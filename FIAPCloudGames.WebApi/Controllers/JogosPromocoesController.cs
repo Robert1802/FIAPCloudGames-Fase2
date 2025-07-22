@@ -6,6 +6,7 @@ using FIAPCloudGames.Domain.Responses;
 using FIAPCloudGames.Infrastructure.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FIAPCloudGames.Application.DTO.Request;
 
 namespace FIAPCloudGames.WebApi.Controllers
 {
@@ -37,7 +38,7 @@ namespace FIAPCloudGames.WebApi.Controllers
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
-        public IActionResult Cadastrar([FromBody] JogosPromocoesInput input)
+        public IActionResult Cadastrar([FromBody] JogosPromocoesRequest input)
         {
             try
             {

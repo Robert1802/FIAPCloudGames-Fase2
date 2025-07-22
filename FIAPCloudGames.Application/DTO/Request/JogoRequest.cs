@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FIAPCloudGames.Domain.Input
+﻿namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class JogoInput
+    public class JogoRequest
     {
         public string? Nome { get; set; }
         public string? Empresa { get; set; }

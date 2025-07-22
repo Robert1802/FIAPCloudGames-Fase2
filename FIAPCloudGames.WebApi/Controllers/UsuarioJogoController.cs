@@ -5,6 +5,7 @@ using FIAPCloudGames.Domain.Repository;
 using FIAPCloudGames.Domain.Responses;
 using Microsoft.AspNetCore.Authorization;
 using FIAPCloudGames.WebApi.Helpers;
+using FIAPCloudGames.Application.DTO.Request;
 
 namespace FIAPCloudGames.WebApi.Controllers
 {
@@ -39,7 +40,7 @@ namespace FIAPCloudGames.WebApi.Controllers
         [ProducesResponseType(typeof(ApiResponse<CompraJogoResponse>), StatusCodes.Status500InternalServerError)]
         [HttpPost("comprar")]
         [Authorize]
-        public IActionResult Comprar([FromBody] UsuarioJogoInput input)
+        public IActionResult Comprar([FromBody] UsuarioJogoRequest input)
         {
             try
             {

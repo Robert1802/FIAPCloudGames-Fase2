@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FIAPCloudGames.Domain.Input
+namespace FIAPCloudGames.Application.DTO.Request
 {
-    public class UsuarioJogoInput
+    public class UsuarioJogoRequest
     {
         [Required]
         public int UsuarioId { get; set; }

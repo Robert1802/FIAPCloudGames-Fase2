@@ -1,5 +1,5 @@
-﻿using FIAPCloudGames.Domain.Entity;
-using FIAPCloudGames.Domain.Input;
+﻿using FIAPCloudGames.Application.DTO.Request;
+using FIAPCloudGames.Domain.Entity;
 using FIAPCloudGames.Domain.Repository;
 using FIAPCloudGames.Domain.Responses;
 using FIAPCloudGames.WebApi.Helpers;
@@ -25,7 +25,7 @@ namespace FIAPCloudGames.WebApi.Controllers
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(ApiResponse<int>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
-        public IActionResult Cadastrar([FromBody] PromocaoInput input)
+        public IActionResult Cadastrar([FromBody] PromocaoRequest input)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace FIAPCloudGames.WebApi.Controllers
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(ApiResponse<Promocao>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status404NotFound)]
-        public IActionResult Alterar(int id, [FromBody] PromocaoInput input)
+        public IActionResult Alterar(int id, [FromBody] PromocaoRequest input)
         {
             var promocao = _promocaoRepository.ObterPorId(id);
             if (promocao == null)

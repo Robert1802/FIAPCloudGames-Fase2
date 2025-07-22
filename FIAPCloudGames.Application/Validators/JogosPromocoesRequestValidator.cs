@@ -1,11 +1,11 @@
-﻿using FIAPCloudGames.Domain.Input;
+﻿using FIAPCloudGames.Application.DTO.Request;
 using FluentValidation;
 
-namespace FIAPCloudGames.Domain.Validators
+namespace FIAPCloudGames.Application.Validators
 {
-    public class JogosPromocoesInputValidator : AbstractValidator<JogosPromocoesInput>
+    public class JogosPromocoesRequestValidator : AbstractValidator<JogosPromocoesRequest>
     {
-        public JogosPromocoesInputValidator()
+        public JogosPromocoesRequestValidator()
         {
             RuleFor(x => x.JogoId)
                 .GreaterThan(0)

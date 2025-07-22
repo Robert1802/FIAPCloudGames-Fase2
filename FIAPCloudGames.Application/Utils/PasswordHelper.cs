@@ -1,4 +1,4 @@
-﻿namespace FIAPCloudGames.Domain.Utils;
+﻿namespace FIAPCloudGames.Application.Utils;
 
 public static class PasswordHelper
 {

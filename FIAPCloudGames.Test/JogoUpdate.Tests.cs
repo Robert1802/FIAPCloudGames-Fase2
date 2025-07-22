@@ -1,5 +1,5 @@
-﻿using FIAPCloudGames.Domain.Entity;
-using FIAPCloudGames.Domain.Input;
+﻿using FIAPCloudGames.Application.DTO.Request;
+using FIAPCloudGames.Domain.Entity;
 using FIAPCloudGames.Domain.Repository;
 using FIAPCloudGames.Domain.Responses;
 using FIAPCloudGames.WebApi.Controllers;
@@ -50,7 +50,7 @@ public class JogoUpdateTest
             UsuarioId = 999
         };
 
-        var input = new JogoUpdateInput
+        var input = new JogoUpdateRequest
         {
             Id = 1,
             Nome = "  Novo Nome  ",
@@ -86,7 +86,7 @@ public class JogoUpdateTest
     public void Put_ThrowsException_ReturnsBadRequest()
     {
         // Arrange
-        var input = new JogoUpdateInput
+        var input = new JogoUpdateRequest
         {
             Id = 1,
             Nome = "Erro",

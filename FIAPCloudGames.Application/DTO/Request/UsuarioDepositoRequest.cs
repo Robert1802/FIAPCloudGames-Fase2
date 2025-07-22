@@ -2,7 +2,7 @@
 
 namespace FIAPCloudGames.Domain.Input
 {
-    public class UsuarioDeposito
+    public class UsuarioDepositoRequest
     {
         public int Id { get; set; }
 
