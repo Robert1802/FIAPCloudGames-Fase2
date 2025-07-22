@@ -107,10 +107,8 @@ var columnOptions = new ColumnOptions
     {
         StandardColumn.Id,
         StandardColumn.Message,
-        StandardColumn.MessageTemplate,
         StandardColumn.Level,
         StandardColumn.TimeStamp,
-        StandardColumn.Exception,
         StandardColumn.Properties
     }
 };
@@ -126,7 +124,11 @@ builder.Host.UseSerilog((context, services, loggerConfig) =>
                 AutoCreateSqlTable = false
             },
             columnOptions: columnOptions
-        );
+        )
+        .MinimumLevel.Information() // O nivel default do Serilog no app
+        .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning) // Suprime low-level Microsoft logs
+        .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning) // Suprime barulho HTTP
+        .Enrich.FromLogContext();
 });
 
 var app = builder.Build();
