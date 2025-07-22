@@ -16,7 +16,7 @@ variables:
 
 jobs:
 - job: BuildAndTest
-  displayName: 'Build and Test Job'
+  displayName: 'Build e Teste'
   steps:
     - task: UseDotNet@2
       inputs:
