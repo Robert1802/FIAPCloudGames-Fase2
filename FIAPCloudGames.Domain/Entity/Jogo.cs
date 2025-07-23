@@ -8,11 +8,11 @@ namespace FIAPCloudGames.Domain.Entity
     {
         [Required]
         [MaxLength(200)]
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
 
         [Required]
         [MaxLength(400)]
-        public string Descricao { get; set; }
+        public string? Descricao { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(10, 2)")]
@@ -25,13 +25,13 @@ namespace FIAPCloudGames.Domain.Entity
         public int UsuarioId { get; set; }
 
         [JsonIgnore]
-        public virtual Usuario Usuario { get; set; }
+        public virtual Usuario? Usuario { get; set; }
         
         [JsonIgnore]
-        public virtual ICollection<UsuarioJogo> UsuarioJogos { get; set; }
+        public virtual ICollection<UsuarioJogo>? UsuarioJogos { get; set; }
         
         [JsonIgnore]
-        public virtual ICollection<JogosPromocoes> JogosPromocoes { get; set; }
+        public virtual ICollection<JogosPromocoes>? JogosPromocoes { get; set; }
 
     }
 }
