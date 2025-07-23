@@ -2,7 +2,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  name: Default
 
 variables:
   solution: '**/*.sln'
@@ -16,6 +16,8 @@ stages:
   displayName: Build and Publish
   jobs:
   - job: Build
+    pool:
+      name: Default
     steps:
     - task: NuGetToolInstaller@1
 
@@ -46,6 +48,8 @@ stages:
   dependsOn: Build
   jobs:
   - deployment: DeployWeb
+    pool:
+      name: Default
     environment: HMG
     strategy:
       runOnce:
