@@ -39,7 +39,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "**IMPORTANTE:** Cole apenas o token JWT. O prefixo 'Bearer' ser� adicionado automaticamente."
+        Description = "**IMPORTANTE:** Cole apenas o token JWT. O prefixo 'Bearer' será adicionado automaticamente."
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -132,7 +132,7 @@ builder.Host.UseSerilog((context, services, loggerConfig) =>
 
 var app = builder.Build();
 
-//Verifica, sincroniza as migrations e adiciona o usu�rio admin caso n�o exista
+//Verifica, sincroniza as migrations e adiciona o usuário admin caso não exista
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
