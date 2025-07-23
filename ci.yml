@@ -1,51 +1,83 @@
 trigger:
-  branches:
-    include:
-      - "*"
-
-pr:
-  branches:
-    include:
-      - "*"
+- homologacao
 
 pool:
-  vmImage: 'windows-latest'
+  name: windows-latest
 
 variables:
+  solution: '**/*.sln'
   buildConfiguration: 'Release'
+  artifactName: 'drop'
+  webAppName: 'fiapcloudgames-hmg'
 
-jobs:
-- job: BuildAndTest
-  displayName: 'Build e Teste'
-  steps:
+stages:
+- stage: Build
+  displayName: Build and Publish
+  jobs:
+  - job: Build
+    pool:
+      name: Default
+    steps:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
-        version: '8.x'
+        version: '8.0.x'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Restore'
+      displayName: Restore
       inputs:
         command: 'restore'
-        projects: '**/*.csproj'
+        projects: '$(solution)'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Build'
+      displayName: Build
       inputs:
         command: 'build'
-        projects: '**/*.csproj'
+        projects: '$(solution)'
         arguments: '--configuration $(buildConfiguration)'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Test'
+      displayName: Test
       inputs:
         command: 'test'
-        projects: '**/FIAPCloudGames.Test.csproj'
-        arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
+        projects: '$(solution)'
+        arguments: '--configuration $(buildConfiguration) --no-build'
+
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: true
 
     - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifacts'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
+        ArtifactName: '$(artifactName)'
         publishLocation: 'Container'
+
+- stage: DeployHMG
+  displayName: Deploy to Azure Web App (HMG)
+  dependsOn: Build
+  jobs:
+  - deployment: DeployWebHMG
+    pool:
+      name: Default
+    environment: HMG
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              artifactName: '$(artifactName)'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'sc-fiapcloudgames'
+              appType: 'webApp'
+              appName: '$(webAppName)'
+              package: '$(System.ArtifactsDirectory)/$(artifactName)/**/*.zip'
