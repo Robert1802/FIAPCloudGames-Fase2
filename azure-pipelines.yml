@@ -2,7 +2,7 @@ trigger:
 - master
 
 pool:
-  name: Default
+  name: windows-latest
 
 variables:
   solution: '**/*.sln'
