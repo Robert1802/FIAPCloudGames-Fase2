@@ -8,26 +8,52 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
-using FIAPCloudGames.Domain.Utils;
 using FIAPCloudGames.Domain.Entity;
-using FIAPCloudGames.Domain.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FIAPCloudGames.Infrastructure.Repository;
+using FIAPCloudGames.Application.Validators;
+using FIAPCloudGames.Application.Utils;
 using FIAPCloudGames.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
-    .Build();
+var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Add services to the container
+// Configure Serilog
+var columnOptions = new ColumnOptions
+{
+    Store = new Collection<StandardColumn>
+    {
+        StandardColumn.Id,
+        StandardColumn.Message,
+        StandardColumn.Level,
+        StandardColumn.TimeStamp,
+        StandardColumn.Properties
+    }
+};
+
+builder.Host.UseSerilog((context, services, loggerConfig) =>
+{
+    loggerConfig
+        .WriteTo.MSSqlServer(
+            connectionString: connection,
+            sinkOptions: new MSSqlServerSinkOptions
+            {
+                TableName = "Logs",
+                AutoCreateSqlTable = false
+            },
+            columnOptions: columnOptions
+        )
+        .MinimumLevel.Information()
+        .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+        .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
+        .Enrich.FromLogContext();
+});
+
+// Add services
 builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "FIAPCloudGamesApi", Version = "v1" });
@@ -58,31 +84,30 @@ builder.Services.AddSwaggerGen(c =>
             },
             new List<string>()
         }
-    });    
+    });
 });
 
-var connection = configuration.GetConnectionString("ConnectionString");
-
+// DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(connection);
     options.UseLazyLoadingProxies();
 }, ServiceLifetime.Scoped);
 
+// Repositórios
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IJogoRepository, JogoRepository>();
 builder.Services.AddScoped<IUsuarioJogoRepository, UsuarioJogoRepository>();
 builder.Services.AddScoped<IPromocaoRepository, PromocaoRepository>();
 builder.Services.AddScoped<IJogosPromocoesRepository, JogosPromocoesRepository>();
 
+// Validação
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<JogosPromocoesInputValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<JogosPromocoesRequestValidator>();
 
-builder.Services.Configure<JwtSettings>(
-    builder.Configuration.GetSection("Jwt")
-);
+// JWT
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 
-// Auth
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
 builder.Services.AddSingleton<TokenService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -99,36 +124,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings!.ChaveSecreta))
         };
     });
+
 builder.Services.AddAuthorization();
-
-// Configure Serilog
-var columnOptions = new ColumnOptions
-{
-    Store = new Collection<StandardColumn>
-    {
-        StandardColumn.Id,
-        StandardColumn.Message,
-        StandardColumn.MessageTemplate,
-        StandardColumn.Level,
-        StandardColumn.TimeStamp,
-        StandardColumn.Exception,
-        StandardColumn.Properties
-    }
-};
-
-builder.Host.UseSerilog((context, services, loggerConfig) =>
-{
-    loggerConfig
-        .WriteTo.MSSqlServer(
-            connectionString: context.Configuration.GetConnectionString("ConnectionString"),
-            sinkOptions: new MSSqlServerSinkOptions
-            {
-                TableName = "Logs",
-                AutoCreateSqlTable = false
-            },
-            columnOptions: columnOptions
-        );
-});
 
 var app = builder.Build();
 
@@ -157,10 +154,10 @@ using (var scope = app.Services.CreateScope())
 
         dbContext.Usuario.Add(admin);
         dbContext.SaveChanges();
-    }    
+    }
 }
 
-// Configure the HTTP request pipeline.
+// Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -172,9 +169,6 @@ app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

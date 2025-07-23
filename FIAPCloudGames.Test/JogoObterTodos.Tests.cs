@@ -4,9 +4,7 @@ using FIAPCloudGames.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using FIAPCloudGames.Domain.Input;
 using FIAPCloudGames.Domain.Responses;
-using FIAPCloudGames.Application.DTO;
 
 namespace FIAPCloudGames.Test
 {
@@ -41,7 +39,7 @@ namespace FIAPCloudGames.Test
             // Assert
             Assert.NotNull(resultado);
             Assert.Equal(200, resultado.StatusCode);
-            var data = Assert.IsType<List<JogoDto>>(resultado.Value);
+            var data = Assert.IsType<List<Jogo>>(resultado.Value);
             Assert.Equal(2, data.Count);
         }
 
@@ -63,7 +61,7 @@ namespace FIAPCloudGames.Test
             // Assert
             Assert.NotNull(resultado);
             Assert.Equal(200, resultado.StatusCode);
-            var data = Assert.IsType<List<JogoDto>>(resultado.Value);
+            var data = Assert.IsType<List<Jogo>>(resultado.Value);
             Assert.Single(data);
             Assert.Equal("Minecraft", data[0].Nome);
         }

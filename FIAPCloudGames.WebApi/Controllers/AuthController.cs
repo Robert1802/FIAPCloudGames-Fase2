@@ -1,7 +1,7 @@
-﻿using FIAPCloudGames.Domain.Input;
-using FIAPCloudGames.Domain.Repository;
+﻿using FIAPCloudGames.Domain.Repository;
 using FIAPCloudGames.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using FIAPCloudGames.Application.DTO.Request;
 
 namespace FIAPCloudGames.WebApi.Controllers;
 
@@ -19,7 +19,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginInput input)
+    public IActionResult Login([FromBody] LoginRequest input)
     {
         var usuario = _repo.Logar(input.Email!, input.Senha!);
         if (usuario == null)

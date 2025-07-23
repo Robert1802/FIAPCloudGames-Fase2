@@ -1,13 +1,11 @@
-﻿using Azure;
+﻿using FIAPCloudGames.Application.DTO.Request;
+using FIAPCloudGames.Application.Utils;
 using FIAPCloudGames.Domain.Entity;
-using FIAPCloudGames.Domain.Input;
 using FIAPCloudGames.Domain.Repository;
 using FIAPCloudGames.Domain.Responses;
-using FIAPCloudGames.Domain.Utils;
 using FIAPCloudGames.WebApi.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace FIAPCloudGames.WebApi.Controllers
 {
@@ -53,7 +51,7 @@ namespace FIAPCloudGames.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] UsuarioInput input)
+        public IActionResult Post([FromBody] UsuarioRequest input)
         {
             try
             {
@@ -86,7 +84,7 @@ namespace FIAPCloudGames.WebApi.Controllers
         [HttpPut]
         [Authorize]
         [ProducesResponseType(typeof(ApiResponse<UsuarioResponse>), StatusCodes.Status200OK)]
-        public IActionResult Put([FromBody] UsuarioUpdateInput input)
+        public IActionResult Put([FromBody] UsuarioUpdateRequest input)
         {
             try
             {
@@ -122,7 +120,7 @@ namespace FIAPCloudGames.WebApi.Controllers
 
         [HttpPut("administrador")]
         [Authorize(Roles = "Admin")]
-        public IActionResult TransformarEmAdmin([FromBody] UsuarioAdminInput input)
+        public IActionResult TransformarEmAdmin([FromBody] UsuarioAdminRequest input)
         {
             try
             {
@@ -169,7 +167,7 @@ namespace FIAPCloudGames.WebApi.Controllers
         }
 
         [HttpPost("depositar")]
-        public IActionResult Depositar([FromBody] UsuarioDeposito input)
+        public IActionResult Depositar([FromBody] UsuarioDepositoRequest input)
         {
             try
             {
