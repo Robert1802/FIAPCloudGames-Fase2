@@ -1,20 +1,23 @@
-using FIAPCloudGames.Domain.Repository;
-using Microsoft.EntityFrameworkCore;
 using FIAPCloudGames.Application.Services;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
-using Microsoft.OpenApi.Models;
-using Serilog;
-using Serilog.Sinks.MSSqlServer;
-using System.Collections.ObjectModel;
+using FIAPCloudGames.Application.Utils;
+using FIAPCloudGames.Application.Validators;
 using FIAPCloudGames.Domain.Entity;
+using FIAPCloudGames.Domain.Repository;
+using FIAPCloudGames.Infrastructure.Middleware;
+using FIAPCloudGames.Infrastructure.Repository;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using FIAPCloudGames.Infrastructure.Repository;
-using FIAPCloudGames.Application.Validators;
-using FIAPCloudGames.Application.Utils;
-using FIAPCloudGames.Infrastructure.Middleware;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Sinks.ApplicationInsights.TelemetryConverters;
+using Serilog.Sinks.MSSqlServer;
+using System.Collections.ObjectModel;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +48,10 @@ builder.Host.UseSerilog((context, services, loggerConfig) =>
             },
             columnOptions: columnOptions
         )
+        .WriteTo.ApplicationInsights(
+            services.GetRequiredService<TelemetryConfiguration>(),
+            new TraceTelemetryConverter()
+        )
         .MinimumLevel.Information()
         .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
         .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
@@ -53,6 +60,7 @@ builder.Host.UseSerilog((context, services, loggerConfig) =>
 
 // Add services
 builder.Services.AddControllers();
+builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -126,6 +134,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddSingleton<TelemetryClient>();
 
 var app = builder.Build();
 
@@ -166,9 +175,7 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
-
 app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
