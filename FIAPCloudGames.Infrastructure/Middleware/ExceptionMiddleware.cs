@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Serilog;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 
@@ -8,23 +9,26 @@ namespace FIAPCloudGames.Infrastructure.Middleware
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger _logger;
+        private readonly ILogger<ExceptionMiddleware> _logger;
+        private readonly TelemetryClient _telemetryClient;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public ExceptionMiddleware(RequestDelegate next, TelemetryClient telemetryClient, ILogger<ExceptionMiddleware> logger)
         {
             _next = next;
-            _logger = Log.ForContext<ExceptionMiddleware>(); // Usa Serilog
+            _telemetryClient = telemetryClient;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try
             {
-                await _next(httpContext); // Continua para o próximo middleware
+                await _next(httpContext);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Ocorreu um erro não tratado.");
+                _logger.LogError(ex, "Ocorreu um erro não tratado.");
+                _telemetryClient.TrackException(ex);
 
                 httpContext.Response.ContentType = "application/json";
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -33,7 +37,7 @@ namespace FIAPCloudGames.Infrastructure.Middleware
                 {
                     StatusCode = httpContext.Response.StatusCode,
                     Message = "Ocorreu um erro inesperado no servidor.",
-                    Detailed = ex.Message // opcional: você pode esconder isso em produção
+                    Detailed = ex.Message
                 };
 
                 await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
