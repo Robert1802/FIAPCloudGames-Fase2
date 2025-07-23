@@ -63,7 +63,7 @@ public class JogoCreateTest
         jogo!.Nome.Should().Be("God of Code");
         jogo.Empresa.Should().Be("Zitelli Games");
         jogo.Preco.Should().Be(199.90m);
-        jogo.Descricao.Should().Be("Jogo de c�digo");
+        jogo.Descricao.Should().Be("Jogo de código");
         jogo.UsuarioId.Should().Be(1);
 
         _jogoRepositoryMock.Verify(r => r.Cadastrar(It.IsAny<Jogo>()), Times.Once);
@@ -73,11 +73,11 @@ public class JogoCreateTest
     public void Post_DeveRetornarBadRequest_QuandoJogoJaExiste()
     {
         // Arrange
-        var input = new JogoRequest(Descricao: "Jogo de c�digo", Empresa: "Zitelli Games", Nome: "God of Code", Preco: 199.90m);
+        var input = new JogoRequest(Descricao: "Jogo de código", Empresa: "Zitelli Games", Nome: "God of Code", Preco: 199.90m);
 
         _jogoRepositoryMock
             .Setup(r => r.Cadastrar(It.IsAny<Jogo>()))
-            .Throws(new Exception("O jogo j� existe em nossos servidores"));
+            .Throws(new Exception("O jogo já existe em nossos servidores"));
 
         // Act
         var resultado = _controller.Post(input);
@@ -87,7 +87,7 @@ public class JogoCreateTest
         badRequest.Should().NotBeNull();
         badRequest!.StatusCode.Should().Be(400);
 
-        badRequest.Value.Should().Be($"O jogo {input.Nome} j� existe em nossos servidores.");
+        badRequest.Value.Should().Be($"O jogo {input.Nome} já existe em nossos servidores.");
 
         _jogoRepositoryMock.Verify(r => r.Cadastrar(It.IsAny<Jogo>()), Times.Once);
     }
