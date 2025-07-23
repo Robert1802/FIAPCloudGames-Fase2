@@ -18,7 +18,7 @@ stages:
   jobs:
   - job: Build
     pool:
-      name: Default
+      vmImage: 'windows-latest'
     steps:
     - task: UseDotNet@2
       inputs:
@@ -65,7 +65,7 @@ stages:
 #   jobs:
 #   - deployment: DeployWebHMG
 #     pool:
-#       name: Default
+#       vmImage: 'windows-latest'
 #     environment: HMG
 #     strategy:
 #       runOnce:
