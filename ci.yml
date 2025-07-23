@@ -1,5 +1,7 @@
 trigger:
-- homologacao
+  branches:
+    include:
+      - "*"
 
 pool:
   name: windows-latest
@@ -8,11 +10,11 @@ variables:
   solution: '**/*.sln'
   buildConfiguration: 'Release'
   artifactName: 'drop'
-  webAppName: 'fiapcloudgames-hmg'
+  # webAppName: 'fiapcloudgames-hmg'
 
 stages:
 - stage: Build
-  displayName: Build and Publish
+  displayName: Build
   jobs:
   - job: Build
     pool:
@@ -57,27 +59,27 @@ stages:
         ArtifactName: '$(artifactName)'
         publishLocation: 'Container'
 
-- stage: DeployHMG
-  displayName: Deploy to Azure Web App (HMG)
-  dependsOn: Build
-  jobs:
-  - deployment: DeployWebHMG
-    pool:
-      name: Default
-    environment: HMG
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: DownloadBuildArtifacts@0
-            inputs:
-              buildType: 'current'
-              artifactName: '$(artifactName)'
-              downloadPath: '$(System.ArtifactsDirectory)'
+# - stage: DeployHMG
+#   displayName: Deploy to Azure Web App (HMG)
+#   dependsOn: Build
+#   jobs:
+#   - deployment: DeployWebHMG
+#     pool:
+#       name: Default
+#     environment: HMG
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - task: DownloadBuildArtifacts@0
+#             inputs:
+#               buildType: 'current'
+#               artifactName: '$(artifactName)'
+#               downloadPath: '$(System.ArtifactsDirectory)'
 
-          - task: AzureWebApp@1
-            inputs:
-              azureSubscription: 'sc-fiapcloudgames'
-              appType: 'webApp'
-              appName: '$(webAppName)'
-              package: '$(System.ArtifactsDirectory)/$(artifactName)/**/*.zip'
+#           - task: AzureWebApp@1
+#             inputs:
+#               azureSubscription: 'sc-fiapcloudgames'
+#               appType: 'webApp'
+#               appName: '$(webAppName)'
+#               package: '$(System.ArtifactsDirectory)/$(artifactName)/**/*.zip'
