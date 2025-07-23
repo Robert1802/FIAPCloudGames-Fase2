@@ -14,6 +14,7 @@ using FluentValidation.AspNetCore;
 using FIAPCloudGames.Infrastructure.Repository;
 using FIAPCloudGames.Application.Validators;
 using FIAPCloudGames.Application.Utils;
+using FIAPCloudGames.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -128,7 +129,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Migrate banco e cria admin
+//Verifica, sincroniza as migrations e adiciona o usuário admin caso não exista
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -164,6 +165,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
