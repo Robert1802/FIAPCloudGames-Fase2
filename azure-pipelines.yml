@@ -8,7 +8,7 @@ variables:
   solution: '**/*.sln'
   buildConfiguration: 'Release'
   artifactName: 'drop'
-  webAppName: 'fiapcloudgames-prd'
+  webAppName: 'fiapcloudgames-hmg'
 
 stages:
 - stage: Build
@@ -57,14 +57,14 @@ stages:
         ArtifactName: '$(artifactName)'
         publishLocation: 'Container'
 
-- stage: DeployPRD
-  displayName: Deploy to Azure Web App (PRD)
+- stage: DeployHMG
+  displayName: Deploy to Azure Web App (HMG)
   dependsOn: Build
   jobs:
-  - deployment: DeployWebPRD
+  - deployment: DeployWebHMG
     pool:
       name: Default
-    environment: PRD
+    environment: HMG
     strategy:
       runOnce:
         deploy:
