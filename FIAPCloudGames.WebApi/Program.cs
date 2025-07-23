@@ -14,6 +14,7 @@ using FIAPCloudGames.Domain.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FIAPCloudGames.Infrastructure.Repository;
+using FIAPCloudGames.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -167,6 +168,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
 
