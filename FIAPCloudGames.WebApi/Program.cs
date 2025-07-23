@@ -129,7 +129,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-//Verifica, sincroniza as migrations e adiciona o usuário admin caso não exista
+// Verifica, sincroniza as migrations e adiciona o usuário admin caso não exista
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -157,12 +157,13 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Pipeline
-if (app.Environment.IsDevelopment())
+// Middleware e pipeline
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "FIAPCloudGames API V1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseHttpsRedirection();
 
