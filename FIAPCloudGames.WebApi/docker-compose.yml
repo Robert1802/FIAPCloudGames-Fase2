@@ -1,0 +1,9 @@
+services:
+  fiapcloudgames:
+    build:
+      context: ..
+      dockerfile: FIAPCloudGames.WebApi/Dockerfile
+    ports:
+      - "8080:80"
+    env_file:
+      - .env

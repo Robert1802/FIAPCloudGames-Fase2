@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIAPCloudGames.Test", "FIAPCloudGames.Test\FIAPCloudGames.Test.csproj", "{D511DA7C-9339-456D-B33B-7DA4CBDE8540}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIAPCloudGames.Test", "FIAPCloudGames.Test\FIAPCloudGames.Test.csproj", "{D511DA7C-9339-456D-B33B-7DA4CBDE8540}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIAPCloudGames.Application", "FIAPCloudGames.Application\FIAPCloudGames.Application.csproj", "{E58B5F8A-FAB8-47C2-9C7B-57D2C5C22C76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIAPCloudGames.Application", "FIAPCloudGames.Application\FIAPCloudGames.Application.csproj", "{E58B5F8A-FAB8-47C2-9C7B-57D2C5C22C76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIAPCloudGames.Domain", "FIAPCloudGames.Domain\FIAPCloudGames.Domain.csproj", "{3DE7B780-9E6B-8BD9-E351-40E3D43EE6D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIAPCloudGames.Domain", "FIAPCloudGames.Domain\FIAPCloudGames.Domain.csproj", "{3DE7B780-9E6B-8BD9-E351-40E3D43EE6D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIAPCloudGames.WebApi", "FIAPCloudGames.WebApi\FIAPCloudGames.WebApi.csproj", "{BBDAEE28-1EFA-07C4-5162-CA7B28C57425}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIAPCloudGames.WebApi", "FIAPCloudGames.WebApi\FIAPCloudGames.WebApi.csproj", "{BBDAEE28-1EFA-07C4-5162-CA7B28C57425}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIAPCloudGames.Infrastructure", "FIAPCloudGames.Infrastructure\FIAPCloudGames.Infrastructure.csproj", "{27F85A76-455A-6A90-1FBB-128BEC17827C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIAPCloudGames.Infrastructure", "FIAPCloudGames.Infrastructure\FIAPCloudGames.Infrastructure.csproj", "{27F85A76-455A-6A90-1FBB-128BEC17827C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
