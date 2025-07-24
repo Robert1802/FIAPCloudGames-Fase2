@@ -10,12 +10,12 @@ namespace FIAPCloudGames.Domain.Entity
         [Required]
         [ForeignKey("Jogo")]
         public int JogoId { get; set; }
-        public virtual Jogo Jogo { get; set; }
+        public virtual Jogo? Jogo { get; set; }
 
         [Required]
         [ForeignKey("Promocao")]
         public int PromocaoId { get; set; }
-        public virtual Promocao Promocao { get; set; }
+        public virtual Promocao? Promocao { get; set; }
                 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
@@ -26,6 +26,6 @@ namespace FIAPCloudGames.Domain.Entity
         public int UsuarioId { get; set; }
 
         [JsonIgnore]
-        public virtual Usuario Usuario { get; set; }
+        public virtual Usuario? Usuario { get; set; }
     }
 }
