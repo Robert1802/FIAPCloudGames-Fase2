@@ -1,3 +1,4 @@
+using DotNetEnv;
 using FIAPCloudGames.Application.Services;
 using FIAPCloudGames.Application.Utils;
 using FIAPCloudGames.Application.Validators;
@@ -19,7 +20,16 @@ using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
 using System.Text;
 
+// Carrega variáveis do .env
+Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Configuração: carrega appsettings.json + variáveis de ambiente
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 

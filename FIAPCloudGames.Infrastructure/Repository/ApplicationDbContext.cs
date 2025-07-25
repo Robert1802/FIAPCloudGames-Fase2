@@ -8,19 +8,9 @@ namespace FIAPCloudGames.Infrastructure.Repository
     {
         private readonly string _connectionString;
 
-        public ApplicationDbContext()
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
         {
-            IConfiguration configuration = new ConfigurationBuilder()
-                    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                    .AddJsonFile("appsettings.json")
-                    .Build();
-
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
-        }
-
-        public ApplicationDbContext(string connectionString)
-        {
-            _connectionString = connectionString;
         }
 
         public DbSet<Jogo> Jogo { get; set; }
