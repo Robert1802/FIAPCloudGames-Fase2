@@ -10,7 +10,6 @@ variables:
   solution: '**/*.sln'
   buildConfiguration: 'Release'
   artifactName: 'drop'
-  # webAppName: 'fiapcloudgames-hmg'
 
 stages:
 - stage: Build
@@ -58,28 +57,3 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: '$(artifactName)'
         publishLocation: 'Container'
-
-# - stage: DeployHMG
-#   displayName: Deploy to Azure Web App (HMG)
-#   dependsOn: Build
-#   jobs:
-#   - deployment: DeployWebHMG
-#     pool:
-#       vmImage: 'windows-latest'
-#     environment: HMG
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: DownloadBuildArtifacts@0
-#             inputs:
-#               buildType: 'current'
-#               artifactName: '$(artifactName)'
-#               downloadPath: '$(System.ArtifactsDirectory)'
-
-#           - task: AzureWebApp@1
-#             inputs:
-#               azureSubscription: 'sc-fiapcloudgames'
-#               appType: 'webApp'
-#               appName: '$(webAppName)'
-#               package: '$(System.ArtifactsDirectory)/$(artifactName)/**/*.zip'
