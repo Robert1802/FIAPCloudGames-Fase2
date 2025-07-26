@@ -11,6 +11,7 @@ COPY ["FIAPCloudGames.Infrastructure/FIAPCloudGames.Infrastructure.csproj", "FIA
 
 # Restaura os pacotes NuGet
 RUN dotnet restore "FIAPCloudGames.WebApi/FIAPCloudGames.WebApi.csproj"
+RUN dotnet restore "FIAPCloudGames.Infrastructure/FIAPCloudGames.Infrastructure.csproj"
 
 # Copia todo o restante do código
 COPY . .
