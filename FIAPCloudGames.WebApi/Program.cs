@@ -1,3 +1,4 @@
+using DotNetEnv;
 using FIAPCloudGames.Application.Services;
 using FIAPCloudGames.Application.Utils;
 using FIAPCloudGames.Application.Validators;
@@ -19,7 +20,16 @@ using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
 using System.Text;
 
+// Carrega variáveis do .env
+Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Configuração: carrega appsettings.json + variáveis de ambiente
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -137,6 +147,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddSingleton<TelemetryClient>();
 
 var app = builder.Build();
+
+// Força binding para que o Docker acesse via EXPOSE 80
+app.Urls.Add("http://0.0.0.0:80");
 
 // Verifica, sincroniza as migrations e adiciona o usuário admin caso não exista
 using (var scope = app.Services.CreateScope())
