@@ -29,7 +29,7 @@ stages:
       inputs:
         command: build
         repository: $(imageRepository)
-        Dockerfile: 'FIAPCloudGames.WebApi/Dockerfile'
+        Dockerfile: 'Dockerfile'
         tags: |
           $(containerTag)
           latest
