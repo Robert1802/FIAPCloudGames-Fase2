@@ -29,7 +29,7 @@ stages:
       inputs:
         command: build
         repository: $(imageRepository)
-        Dockerfile: '**/Dockerfile'
+        Dockerfile: 'FIAPCloudGames.WebApi/Dockerfile'
         tags: |
           $(containerTag)
           latest
@@ -48,7 +48,7 @@ stages:
   dependsOn: BuildAndPush
   jobs:
   - deployment: DeployToAppService
-    environment: 'production'
+    environment: 'fiapcloudgames-prod'
     strategy:
       runOnce:
         deploy:
