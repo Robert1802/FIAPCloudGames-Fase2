@@ -70,5 +70,5 @@ stages:
 
           - script: |
               echo Swagger UI disponível em:
-              echo https://$(webAppName).azurewebsites.net/swagger
+              echo https://fiapcloudgames-app-dhegb3cbcugshddk.brazilsouth-01.azurewebsites.net/swagger/index.html
             displayName: Exibir URL do Swagger
