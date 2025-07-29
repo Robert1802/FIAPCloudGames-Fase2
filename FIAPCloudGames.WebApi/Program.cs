@@ -148,9 +148,6 @@ builder.Services.AddSingleton<TelemetryClient>();
 
 var app = builder.Build();
 
-// Força binding para que o Docker acesse via EXPOSE 80
-app.Urls.Add("http://0.0.0.0:80");
-
 // Verifica, sincroniza as migrations e adiciona o usuário admin caso não exista
 using (var scope = app.Services.CreateScope())
 {
