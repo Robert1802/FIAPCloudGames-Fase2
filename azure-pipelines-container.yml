@@ -9,7 +9,10 @@ variables:
   imageRepository: 'fiapcloudgames'
   containerTag: '$(Build.BuildId)'
   azureSubscription: 'sc-fiapcloudgames'
-  webAppName: 'fiapcloudgames-app'
+  webAppNameHMG: 'fiapcloudgames-app-hmg'
+  webAppNamePRD: 'fiapcloudgames-app-prd'
+  solution: '**/*.sln'
+  buildConfiguration: 'Release'
 
 stages:
 - stage: BuildAndPush
@@ -35,7 +38,7 @@ stages:
           latest
 
     - task: DotNetCoreCLI@2
-      displayName: Test
+      displayName: Run Tests
       inputs:
         command: 'test'
         projects: '$(solution)'
@@ -50,20 +53,48 @@ stages:
           $(containerTag)
           latest
 
-- stage: Deploy
-  displayName: Deploy to App Service
+- stage: DeployHMG
+  displayName: Deploy to HMG
   dependsOn: BuildAndPush
   jobs:
-  - deployment: DeployToAppService
-    environment: 'fiapcloudgames-prod'
+  - deployment: DeployToHMG
+    environment: 'fiapcloudgames-hmg'
     strategy:
       runOnce:
         deploy:
           steps:
           - task: AzureWebAppContainer@1
-            displayName: Deploy to Web App for Containers
+            displayName: Deploy to HMG Web App
             inputs:
               azureSubscription: $(azureSubscription)
-              appName: $(webAppName)
+              appName: $(webAppNameHMG)
               containers: |
                 $(acrLoginServer)/$(imageRepository):$(containerTag)
+
+          - script: |
+              echo "✅ Deploy HMG realizado com sucesso!"
+              echo "🌐 Swagger UI: https://$(webAppNameHMG).azurewebsites.net/swagger"
+            displayName: Show Swagger URL HMG
+
+- stage: DeployPRD
+  displayName: Deploy to PRD
+  dependsOn: DeployHMG
+  jobs:
+  - deployment: DeployToPRD
+    environment: 'fiapcloudgames-prd' # Habilite aprovação manual neste environment no DevOps
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebAppContainer@1
+            displayName: Deploy to PRD Web App
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appName: $(webAppNamePRD)
+              containers: |
+                $(acrLoginServer)/$(imageRepository):$(containerTag)
+
+          - script: |
+              echo "✅ Deploy PRD realizado com sucesso!"
+              echo "🌐 Swagger UI: https://$(webAppNamePRD).azurewebsites.net/swagger"
+            displayName: Show Swagger URL PRD
