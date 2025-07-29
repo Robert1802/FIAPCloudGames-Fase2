@@ -35,7 +35,7 @@ stages:
           latest
 
     - task: DotNetCoreCLI@2
-      displayName: Test
+      displayName: Run Tests
       inputs:
         command: 'test'
         projects: '$(solution)'
