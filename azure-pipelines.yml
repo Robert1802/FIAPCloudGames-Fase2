@@ -1,24 +1,29 @@
 trigger:
-- master
+  branches:
+    include:
+      - "*"
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
+  acrLoginServer: 'fcregistry.azurecr.io'
+  imageRepository: 'fiapcloudgames'
+  containerTag: '$(Build.BuildId)'
+  azureSubscription: 'sc-fiapcloudgames'
+  webAppName: 'fiapcloudgames-hmg'
   solution: '**/*.sln'
   buildConfiguration: 'Release'
-  artifactName: 'drop'
-  webAppName: 'fiapcloudgames-hmg'
 
 stages:
-- stage: Build
-  displayName: Build and Publish
+- stage: BuildAndPush
+  displayName: Build and Push Docker Image
   jobs:
-  - job: Build
-    pool:
-      vmImage: 'windows-latest'
+  - job: Docker
+    displayName: Build and Push
     steps:
     - task: UseDotNet@2
+      displayName: 'Install .NET SDK'
       inputs:
         packageType: 'sdk'
         version: '8.0.x'
@@ -37,47 +42,56 @@ stages:
         arguments: '--configuration $(buildConfiguration)'
 
     - task: DotNetCoreCLI@2
-      displayName: Test
+      displayName: Run Tests
       inputs:
         command: 'test'
         projects: '$(solution)'
-        arguments: '--configuration $(buildConfiguration) --no-build'
+        arguments: '--configuration $(buildConfiguration)'
 
-    - task: DotNetCoreCLI@2
-      displayName: Publish
+    - task: Docker@2
+      displayName: Login to ACR
       inputs:
-        command: 'publish'
-        publishWebProjects: true
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-        zipAfterPublish: true
+        command: login
+        containerRegistry: '$(acrLoginServer)'
 
-    - task: PublishBuildArtifacts@1
+    - task: Docker@2
+      displayName: Build Image
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: '$(artifactName)'
-        publishLocation: 'Container'
+        command: build
+        repository: $(imageRepository)
+        Dockerfile: 'Dockerfile'
+        tags: |
+          $(containerTag)
+          latest
 
-- stage: DeployHMG
-  displayName: Deploy to Azure Web App (HMG)
-  dependsOn: Build
+    - task: Docker@2
+      displayName: Push Image
+      inputs:
+        command: push
+        repository: $(imageRepository)
+        tags: |
+          $(containerTag)
+          latest
+
+- stage: Deploy
+  displayName: Deploy to App Service
+  dependsOn: BuildAndPush
   jobs:
-  - deployment: DeployWebHMG
-    pool:
-      vmImage: 'windows-latest'
-    environment: HMG
+  - deployment: DeployToAppService
+    environment: 'fiapcloudgames-hmg'
     strategy:
       runOnce:
         deploy:
           steps:
-          - task: DownloadBuildArtifacts@0
+          - task: AzureWebAppContainer@1
+            displayName: Deploy to Web App for Containers
             inputs:
-              buildType: 'current'
-              artifactName: '$(artifactName)'
-              downloadPath: '$(System.ArtifactsDirectory)'
+              azureSubscription: $(azureSubscription)
+              appName: $(webAppName)
+              containers: |
+                $(acrLoginServer)/$(imageRepository):$(containerTag)
 
-          - task: AzureWebApp@1
-            inputs:
-              azureSubscription: 'sc-fiapcloudgames'
-              appType: 'webApp'
-              appName: '$(webAppName)'
-              package: '$(System.ArtifactsDirectory)/$(artifactName)/**/*.zip'
+          - script: |
+              echo Swagger UI disponível em:
+              echo https://fiapcloudgames-hmg-fqfdc7ggfxeudzdw.brazilsouth-01.azurewebsites.net/swagger/index.html
+            displayName: Exibir URL do Swagger
