@@ -16,6 +16,6 @@ namespace FIAPCloudGames.Infrastructure.Repository
             _dbSet.FirstOrDefault(entity => entity.Nome == nome);
 
         public List<Jogo> ObterTodosFiltro(string filtroNome) =>
-            _dbSet.Where(x => x.Nome.Contains(filtroNome) ).ToList();
+            _dbSet.Where(x => x.Nome!.Contains(filtroNome)).ToList();
     }
 }

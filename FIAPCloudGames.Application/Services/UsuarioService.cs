@@ -23,7 +23,7 @@ namespace FIAPCloudGames.Application.Services
                 BadRequest("Usuário não cadastrado");
 
             bool ehAdmin = usuarioLogado.NivelAcesso == "Admin";
-            bool mesmoUsuario = usuarioLogado.Id != usuario.Id;
+            bool mesmoUsuario = usuarioLogado.Id != usuario!.Id;
 
             // Se não for admin e estiver tentando editar/deletar outro usuário
             if (!ehAdmin && mesmoUsuario)

@@ -19,7 +19,7 @@ namespace FIAPCloudGames.Infrastructure.Repository
                 .AsNoTracking()
                 .FirstOrDefault(x =>
                     x.JogoId == jogoId &&
-                    x.Promocao.Ativo &&
+                    x.Promocao!.Ativo &&
                     x.Promocao.DataInicio <= dataAtual &&
                     x.Promocao.DataFim >= dataAtual &&
                     (PromocaoId == 0 || x.Promocao.Id == PromocaoId)
@@ -34,7 +34,7 @@ namespace FIAPCloudGames.Infrastructure.Repository
                 .Include(x => x.Promocao)
                 .AsNoTracking()
                 .Any(x => x.JogoId == jogoId &&
-                x.Promocao.Ativo == true &&
+                x.Promocao!.Ativo == true &&
                 x.Promocao.DataInicio >= dataAtual &&
                 x.Promocao.DataFim <= dataAtual);
         }

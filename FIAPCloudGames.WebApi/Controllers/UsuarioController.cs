@@ -33,9 +33,9 @@ namespace FIAPCloudGames.WebApi.Controllers
                 UsuarioResponse response = new
                 (
                     usuario.Id,
-                    usuario.Nome,
-                    usuario.Email,
-                    usuario.Senha,
+                    usuario.Nome!,
+                    usuario.Email!,
+                    usuario.Senha!,
                     usuario.NivelAcesso,
                     usuario.Saldo
                 );
@@ -101,7 +101,7 @@ namespace FIAPCloudGames.WebApi.Controllers
                 (
                     usuario.Id,
                     usuario.Nome,
-                    usuario.Email,
+                    usuario.Email!,
                     usuario.Senha,
                     usuario.NivelAcesso,
                     usuario.Saldo

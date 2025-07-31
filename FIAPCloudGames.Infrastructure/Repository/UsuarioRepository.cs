@@ -15,8 +15,8 @@ public class UsuarioRepository(ApplicationDbContext context) : EFREpository<Usua
 
     public decimal ConferirSaldo(int id)
     {
-        Usuario usuario = _dbSet.FirstOrDefault(entity => entity.Id == id);
-        return (decimal)usuario.Saldo;
+        Usuario? usuario = _dbSet.FirstOrDefault(entity => entity.Id == id);
+        return (decimal)usuario!.Saldo;
     }
 
     public decimal Depositar(int id, decimal valor)

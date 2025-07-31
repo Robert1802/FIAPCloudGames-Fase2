@@ -36,7 +36,7 @@ namespace FIAPCloudGames.Infrastructure.Repository
 
         public T ObterPorId(int id)
         {
-            return _dbSet.FirstOrDefault(entity => entity.Id == id);
+            return _dbSet.FirstOrDefault(entity => entity.Id == id)!;
         }
 
         public IList<T> ObterTodos()
