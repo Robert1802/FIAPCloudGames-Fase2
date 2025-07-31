@@ -66,8 +66,8 @@ namespace FIAPCloudGames.WebApi.Controllers
                 Jogo jogo = _jogoRepository.ObterPorId(id);
                 JogoResponse response = new
                 (
-                    jogo.Nome,
-                    jogo.Descricao,
+                    jogo.Nome!,
+                    jogo.Descricao!,
                     jogo.Preco,
                     jogo.Empresa
                 );
@@ -134,9 +134,9 @@ namespace FIAPCloudGames.WebApi.Controllers
             try
             {
                 Jogo jogo = _jogoRepository.ObterPorId(input.Id);
-                jogo.Nome = input.Nome.Trim();
+                jogo.Nome = input.Nome!.Trim();
                 jogo.Empresa = input.Empresa;
-                jogo.Descricao = input.Descricao.Trim();
+                jogo.Descricao = input.Descricao!.Trim();
                 jogo.Preco = input.Preco;
                 jogo.UsuarioId = UsuarioLogadoHelper.ObterUsuarioLogado(User)!.Id;
 

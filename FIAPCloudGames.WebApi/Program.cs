@@ -74,7 +74,7 @@ builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "FIAPCloudGamesApi", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = $"FIAP Cloud Games Api - {builder.Configuration["SwaggerEnvironment"]}", Version = "v1" });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {

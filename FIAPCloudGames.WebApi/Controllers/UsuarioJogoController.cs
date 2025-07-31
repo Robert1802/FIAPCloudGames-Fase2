@@ -114,7 +114,7 @@ namespace FIAPCloudGames.WebApi.Controllers
                 var response = new CompraJogoResponse(
                     input.UsuarioId,
                     input.JogoId,
-                    jogo.Nome,
+                    jogo.Nome!,
                     precoFinal,
                     promocao?.PromocaoId,
                     descontoAplicado,
