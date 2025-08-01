@@ -1,5 +1,12 @@
 trigger:
-- master
+  branches:
+    include:
+      - master   # Executa após merge na master (produção)
+
+pr:
+  branches:
+    include:
+      - master   # Executa build no PR para a master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -16,6 +23,8 @@ variables:
 stages:
 - stage: BuildAndPush
   displayName: Build and Push Docker Image
+  # Executa no PR para master ou após merge na master
+  condition: or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
   - job: Docker
     displayName: Build and Push
@@ -64,6 +73,8 @@ stages:
 
     - task: Docker@2
       displayName: Push Image
+      # Só faz push após merge na master
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
       inputs:
         command: push
         repository: $(imageRepository)
@@ -74,6 +85,8 @@ stages:
 - stage: Deploy
   displayName: Deploy to App Service
   dependsOn: BuildAndPush
+  # Só faz deploy após merge na master
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - deployment: DeployToAppService
     environment: 'fiapcloudgames-prod'
