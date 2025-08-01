@@ -46,7 +46,7 @@ namespace FIAPCloudGames.Test
             Assert.NotNull(resultado);
             Assert.Equal(200, resultado!.StatusCode);
             var jogoRetornado = Assert.IsType<ApiResponse<JogoResponse>>(resultado.Value);
-            Assert.Equal("Minecraft", jogoRetornado.Dados.Nome);
+            Assert.Equal("Minecraft", jogoRetornado.Dados!.Nome);
         }
 
         [Fact]

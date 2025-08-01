@@ -62,9 +62,17 @@ builder.Host.UseSerilog((context, services, loggerConfig) =>
             services.GetRequiredService<TelemetryConfiguration>(),
             new TraceTelemetryConverter()
         )
+
+        // Removendo Logs desnecessários
         .MinimumLevel.Information()
         .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
         .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
+
+        // Blob Storage Warnings
+        .MinimumLevel.Override("Microsoft.AspNetCore.DataProtection", Serilog.Events.LogEventLevel.Warning)
+        .MinimumLevel.Override("Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager", Serilog.Events.LogEventLevel.Warning)
+        .MinimumLevel.Override("Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware", Serilog.Events.LogEventLevel.Warning)
+
         .Enrich.FromLogContext();
 });
 

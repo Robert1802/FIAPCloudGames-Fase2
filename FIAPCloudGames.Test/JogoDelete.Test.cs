@@ -65,7 +65,7 @@ public class JogoDelete
         var response = Assert.IsType<ApiResponse<string>>(badRequest.Value);
 
         Assert.False(response.Sucesso);
-        Assert.Equal(500, response.Erro.StatusCode);
+        Assert.Equal(500, response.Erro!.StatusCode);
         Assert.Contains("erro ocorreu ao tentar deletar", response.Erro.Mensagem);
 
         mockRepo.Verify(r => r.Deletar(99), Times.Once);
