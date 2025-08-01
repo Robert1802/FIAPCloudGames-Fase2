@@ -1,5 +1,12 @@
 trigger:
-- master
+  branches:
+    include:
+      - master
+
+pr:
+  branches:
+    include:
+      - master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -16,6 +23,7 @@ variables:
 stages:
 - stage: BuildAndPush
   displayName: Build and Push Docker Image
+  condition: or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
   - job: Docker
     displayName: Build and Push
@@ -64,6 +72,7 @@ stages:
 
     - task: Docker@2
       displayName: Push Image
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
       inputs:
         command: push
         repository: $(imageRepository)
@@ -74,6 +83,7 @@ stages:
 - stage: Deploy
   displayName: Deploy to App Service
   dependsOn: BuildAndPush
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - deployment: DeployToAppService
     environment: 'fiapcloudgames-prod'
