@@ -91,7 +91,7 @@ public class JogoUpdateTest
         var badRequest = Assert.IsType<BadRequestObjectResult>(result);
         var response = Assert.IsType<ApiResponse<string>>(badRequest.Value);
 
-        Assert.Equal(500, response.Erro.StatusCode);
+        Assert.Equal(500, response.Erro!.StatusCode);
         Assert.Contains("Um erro ocorreu ao tentar atualizar o jogo", response.Erro.Mensagem);
     }
 }

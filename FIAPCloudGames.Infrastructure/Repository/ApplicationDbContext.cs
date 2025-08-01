@@ -6,7 +6,6 @@ namespace FIAPCloudGames.Infrastructure.Repository
 {
     public class ApplicationDbContext : DbContext
     {
-        private readonly string? _connectionString;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -24,7 +23,6 @@ namespace FIAPCloudGames.Infrastructure.Repository
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(_connectionString);
                 optionsBuilder.UseLazyLoadingProxies();
             }
         }
