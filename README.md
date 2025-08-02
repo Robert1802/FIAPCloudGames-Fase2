@@ -77,4 +77,4 @@ SwaggerEnvironment=Localhost
 ## Link do Youtube
 
 - [FIAP Cloud Games - Modulo 1 - REST API com .NET 8](https://youtu.be/oKnti9S-sew)
-- [FIAP Cloud Games - Modulo 2 - Azure e Docker]()
+- [FIAP Cloud Games - Modulo 2 - Azure e Docker](https://youtu.be/41-tkdHv-1g)
